@@ -73,9 +73,10 @@ def runFUN_function(variable):
         #                                                                    fun_dir,
         #                                                                   inputDir)
         
-        ### To run in Gaby's Mac laptop
+        ### To run in Gaby's or Matt's Mac laptop
         folder_dir = os.path.join(pwd,folder_name)    # directory where input.txt and depth.txt are located (project folder) 
-        EXEC = 'funwave_mac'
+        # EXEC = 'funwave_mac' # Gaby
+        EXEC = 'funwave' # Matt
         FUN = 'FUNWAVE-TVD'
         BIN = 'bin'
         HOME = os.environ['HOME']
@@ -83,12 +84,21 @@ def runFUN_function(variable):
         inputDir =  os.path.join(folder_dir,'input.txt')  # directory to input.txt 
         
         os.chdir(folder_dir)                       # move to folder dir (NOT NEEDED)
+
         # run funwave terminal command:
-        run_fun = "cd %s && /usr/local/Cellar/mpich/3.2_3/bin/mpirun -n %d %s %s > LOG.txt &"%(folder_dir,
-                                                                            processors_text.value,
-                                                                            fun_dir,
-                                                                           inputDir)
+
+        # Gaby's Mac
+        #run_fun = "cd %s && /usr/local/Cellar/mpich/3.2_3/bin/mpirun -n %d %s %s > LOG.txt &"%(folder_dir,
+        #                                                                    processors_text.value,
+        #                                                                    fun_dir,
+        #                                                                   inputDir)
         
+        # Matt's Mac
+        run_fun = "cd %s && /usr/local/Cellar/open-mpi/2.0.1/bin/mpirun -n %d %s %s > LOG.txt &"%(folder_dir,
+                                                                                                  processors_text.value,
+                                                                                                  fun_dir,
+                                                                                                  inputDir)
+
         os.system(run_fun) # run funwave
         return_to_GUI_folder = os.path.join(folder_dir,'..')
         os.chdir(return_to_GUI_folder)  # return to GUI dir
