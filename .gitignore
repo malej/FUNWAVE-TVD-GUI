@@ -1,0 +1,8 @@
+# list files you do not want to track
+*.*~
+*~
+
+*.pyc
+
+*.o 
+*.mod
