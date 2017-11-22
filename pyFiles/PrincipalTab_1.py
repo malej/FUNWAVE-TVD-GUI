@@ -64,7 +64,7 @@ label_NOTE = widgets.HTML("""<b>NOTE:</b> Depth values are [-] for underwater an
 ## vertex elevation and location floatsliders:
 # vertex 1 
 v1_label = widgets.HTML("<b>Vertex #1<b/>")
-MWL = widgets.FloatSlider(description='Elevation ',min=-20, max=20,value = -20,
+MWL = widgets.FloatSlider(description='Elevation ',min=-10, max=20,value = -10,
                     step='0.01',layout = widgets.Layout(width='100%',height = '50px')) #V1 elev = mean water level
 label_v1_loc = widgets.HTML("""Located at <b>0.0 meters</b>.""")     # vert1 loc = 0.0m
 v1_box = widgets.VBox([v1_label,MWL,label_v1_loc],layout=widgets.Layout(display='flex-grow',
