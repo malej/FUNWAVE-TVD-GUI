@@ -53,7 +53,7 @@ container_processors = widgets.VBox(children=[label_processors,processors_text],
 
 # Total project time widget container (label & textbox)
 label_time = widgets.Label('Total Time (sec):')
-time_text = widgets.BoundedFloatText(max=43200, layout=processors_text.layout) # total time max = 12hr
+time_text = widgets.BoundedFloatText(min = 10, value = 60, max=43200, layout=processors_text.layout) # total time max = 12hr
 container_time = widgets.VBox(children=[label_time,time_text],
                               layout = widgets.Layout(width = "30%")) 
 
