@@ -49,7 +49,7 @@ Umean = widgets.Checkbox(description='Umean',value=False)
 # Vmean widget 
 Vmean = widgets.Checkbox(description='Vmean',value=False)
 
-container_col1 = widgets.VBox(children=[DEPTH_OUT,ETA,ETAmean,U,V,Umax,Umean,Vmean,Hmax,Hmin,MFmax,VORmax]) 
+container_col1 = widgets.VBox(children=[DEPTH_OUT,ETA,ETAmean,Hmax,Hmin,U,V,Umax,Umean,Vmean,MFmax,VORmax]) 
 
 ## column 2 of output tab:
 
@@ -89,7 +89,7 @@ AGE = widgets.Checkbox(description='AGE',value=False)
 # WaveHeight 
 WaveHeight = widgets.Checkbox(description='Wave H',value=False)
 
-container_col2 = widgets.VBox(children=[MASK9,SourceX,SourceY,P,Q,Fx,Fy,Gx,Gy,AGE,WaveHeight])   
+container_col2 = widgets.VBox(children=[WaveHeight,SourceX,SourceY,P,Q,Fx,Fy,Gx,Gy,AGE,MASK9])   
                                         
 
 ## column 3 of output tab:

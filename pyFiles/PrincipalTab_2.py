@@ -223,7 +223,7 @@ container_ywidth_wk = widgets.HBox(children=[ywidth_wk_label,ywidth_wk],
                                layout = widgets.Layout(height = '45px'))
 
 deltaWK_label = widgets.Label('DELTA_WK',layout = widgets.Layout(width = "20%"))
-deltaWK = widgets.BoundedFloatText(min=0,max=5,step=0.01,layout = widgets.Layout(width = "30%")) #  usually, delta =  0.3 to 0.6
+deltaWK = widgets.BoundedFloatText(min=0,max=5,step=0.1,layout = widgets.Layout(width = "30%")) #  usually, delta =  0.3 to 0.6
 container_deltaWK = widgets.HBox(children=[deltaWK_label,deltaWK],
                              layout = widgets.Layout(height = '45px'))
 
@@ -285,11 +285,11 @@ container_IniSol = widgets.VBox(children=[container_Xwavemaker,container_dep,con
                          layout = widgets.Layout(align_items = 'stretch' ))
 
 container_WkReg = widgets.VBox(children=[container_xc_wk,container_depWK,container_tPeriod,container_ampWK,
-                         container_thetaWK,container_TimeRamp],
+                         container_thetaWK,container_deltaWK,container_TimeRamp],
                          layout = widgets.Layout(align_items = 'stretch' ))  # add container_yc_wk for 2d gui
 
 container_JON2D_col1 = widgets.VBox(children=[container_xc_wk,container_depWK,container_yc_wk,
-                         container_TimeRamp,container_GammaTMA],
+                         container_TimeRamp,container_GammaTMA,container_deltaWK],
                          layout = widgets.Layout(align_items = 'stretch' ))  # add this WM option to 2d gui
 
 container_JON2D_col2 = widgets.VBox(children=[container_FreqPeak,container_FreqMin,container_FreqMax,container_HMO,
@@ -302,13 +302,13 @@ container_JON2D = widgets.HBox([container_JON2D_col1,container_JON2D_col2],
 container_JON1D_col1 = widgets.VBox(children=[container_xc_wk,container_depWK,container_TimeRamp,
                          container_GammaTMA,container_NFreq],
                          layout = widgets.Layout(width = '50%'))
-container_JON1D_col2 = widgets.VBox(children=[container_FreqPeak,container_FreqMin,container_FreqMax,container_HMO],
+container_JON1D_col2 = widgets.VBox(children=[container_FreqPeak,container_FreqMin,container_FreqMax,container_deltaWK,container_HMO],
                          layout = widgets.Layout(width = '50%'))
 container_JON1D = widgets.HBox([container_JON1D_col1,container_JON1D_col2],
                               layout = widgets.Layout(width = '90%'))
 
 container_WkIrr_col1 = widgets.VBox(children=[container_xc_wk,container_yc_wk,container_depWK,container_TimeRamp,
-                         container_FreqPeak,container_SigmaTheta],
+                         container_FreqPeak,container_SigmaTheta,container_deltaWK],
                          layout = widgets.Layout(width = '50%'))
 container_WkIrr_col2 = widgets.VBox(children=[container_FreqMin,container_FreqMax,container_HMO,
                          container_GammaTMA,container_ThetaPeak,container_NFreq,container_NTheta],
@@ -320,7 +320,7 @@ container_TMA_1D_col1 = widgets.VBox(children=[container_xc_wk,container_depWK,
                          container_TimeRamp,container_GammaTMA,container_NFreq],
                          layout = widgets.Layout(width = '50%'))
 container_TMA_1D_col2 = widgets.VBox(children=[container_FreqPeak,container_FreqMin,
-                         container_FreqMax,container_HMO],
+                         container_FreqMax,container_deltaWK,container_HMO],
                          layout = widgets.Layout(width = '50%'))
 container_TMA_1D = widgets.HBox([container_TMA_1D_col1,container_TMA_1D_col2],
                                layout = widgets.Layout(width = '90%'))
