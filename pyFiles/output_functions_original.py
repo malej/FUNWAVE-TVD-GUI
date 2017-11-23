@@ -1,17 +1,9 @@
 import ipywidgets as widgets
 from traitlets import link
 from IPython.display import display
-import numpy as np
-import os
 
 ##### This py file contains all the functions related to the widgets
 ##### located in the output-post-processing tab (PrincipalTab_5)
-
-# import pertinent variables from PRINCIPAL_TAB
-from pyFiles.PRINCIPAL_TAB import title_text
-
-# import pertinent variables from principal tab 1
-from pyFiles.PrincipalTab_1 import THL
 
 # import pertinent variables from principal tab 2 (input txt : total time & plot interval)
 from pyFiles.PrincipalTab_2 import time_text, plotInt_text
@@ -20,7 +12,7 @@ from pyFiles.PrincipalTab_2 import time_text, plotInt_text
 from pyFiles.PrincipalTab_3 import DEPTH_OUT, U, V, ETA, Hmax, Hmin, MFmax, Umax, VORmax, Umean, Vmean, ETAmean, MASK, MASK9, SourceX, SourceY, P, Q, Fx, Fy, Gx, Gy, AGE, WaveHeight, steady_time, T_INTV_MEAN
 
 # import pertinent variables from principal tab 5 (output-post-processing tab)
-from pyFiles.PrincipalTab_5 import out_options, out_list, plot_time, TimeLimit_text, vmean_cols, umean_cols, surf_cols, u_cols, v_cols, Surfmean_cols,Hmax_cols,Hmin_cols, Hsig_cols, Hrms_cols, Havg_cols, PLOT_label, plot_time_label, VIDEO_label,Xmax_vid,Xmax_plt,Xmin_vid,Xmin_plt,Ymax_vid,Ymax_plt,Ymin_vid,Ymin_plt
+from pyFiles.PrincipalTab_5 import out_options, out_list, plot_time, TimeLimit_text, vmean_cols, umean_cols, surf_cols, u_cols, v_cols, Surfmean_cols,Hmax_cols,Hmin_cols, Hsig_cols, Hrms_cols, Havg_cols, PLOT_label, plot_time_label, VIDEO_label
 
 
 # The next Functions called toggle_output_"variable" adds/removes the output variable to output list
@@ -351,35 +343,6 @@ def toggle_choose_output(change):
         plot_time.max = time_text.value
         TimeLimit_text.max = time_text.value
         
-        # link X axis limits to THL (plot column)
-        Xmax_plt.max = THL.value
-        Xmin_plt.value = 0
-        Xmax_plt.value = THL.value
-        
-        # link X axis limits to THL (video column)
-        Xmax_vid.max = THL.value
-        Xmin_vid.value = 0
-        Xmax_plt.value = THL.value
-        
-        # link Y axis limits to depth (plot & video columns)
-        pwd = os.getcwd()  # get current path
-        s = title_text.value # project title given by the user (widget located in PRINCIPAL_TAB)
-        s = s.replace(" ", "_")
-        folder_name = s.replace(".", "_") # substitute ' ' space and '.' in project title with '_'
-
-        Depthtext = os.path.join(pwd,folder_name,'depth.txt') # path to depth.txt 
-        check_dir_dep = os.path.exists(Depthtext) # check if depth.txt exist
-
-        if check_dir_dep == True:         # if file exist...
-            depth = np.loadtxt(Depthtext)  # import depth.txt to be used in change_dep and change_dep_wk functions 
-            Ymin_vid.min = min(depth[0,:]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
-            Ymin_plt.min = min(depth[0,:]*-1)  
-            
-            Ymin_vid.value = min(depth[0,:]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
-            Ymin_plt.value = min(depth[0,:]*-1)
-        else:
-            pass
-
     elif change['new'] == 'Maximum surface elevation (Hmax)':
         #show
         Hmax_cols.layout.display=''
@@ -409,35 +372,6 @@ def toggle_choose_output(change):
         plot_time.max = time_text.value
         TimeLimit_text.max = time_text.value
         
-        # link X axis limits to THL (plot column)
-        Xmax_plt.max = THL.value
-        Xmin_plt.value = 0
-        Xmax_plt.value = THL.value
-        
-        # link X axis limits to THL (video column)
-        Xmax_vid.max = THL.value
-        Xmin_vid.value = 0
-        Xmax_plt.value = THL.value
-        
-        # link Y axis limits to depth (plot & video columns)
-        pwd = os.getcwd()  # get current path
-        s = title_text.value # project title given by the user (widget located in PRINCIPAL_TAB)
-        s = s.replace(" ", "_")
-        folder_name = s.replace(".", "_") # substitute ' ' space and '.' in project title with '_'
-
-        Depthtext = os.path.join(pwd,folder_name,'depth.txt') # path to depth.txt 
-        check_dir_dep = os.path.exists(Depthtext) # check if depth.txt exist
-
-        if check_dir_dep == True:         # if file exist...
-            depth = np.loadtxt(Depthtext)  # import depth.txt to be used in change_dep and change_dep_wk functions 
-            Ymin_vid.min = min(depth[0,:]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
-            Ymin_plt.min = min(depth[0,:]*-1)  
-            
-            Ymin_vid.value = min(depth[0,:]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
-            Ymin_plt.value = min(depth[0,:]*-1)
-        else:
-            pass
-        
     elif change['new'] == 'Surface Elevation Mean':
         #show
         Surfmean_cols.layout.display=''
@@ -466,35 +400,6 @@ def toggle_choose_output(change):
         TimeLimit_text.max = time_text.value     
         TimeLimit_text.min = steady_time.value + T_INTV_MEAN.value*2  
         
-        # link X axis limits to THL (plot column)
-        Xmax_plt.max = THL.value
-        Xmin_plt.value = 0
-        Xmax_plt.value = THL.value
-        
-        # link X axis limits to THL (video column)
-        Xmax_vid.max = THL.value
-        Xmin_vid.value = 0
-        Xmax_plt.value = THL.value
-        
-        # link Y axis limits to depth (plot & video columns)
-        pwd = os.getcwd()  # get current path
-        s = title_text.value # project title given by the user (widget located in PRINCIPAL_TAB)
-        s = s.replace(" ", "_")
-        folder_name = s.replace(".", "_") # substitute ' ' space and '.' in project title with '_'
-
-        Depthtext = os.path.join(pwd,folder_name,'depth.txt') # path to depth.txt 
-        check_dir_dep = os.path.exists(Depthtext) # check if depth.txt exist
-
-        if check_dir_dep == True:         # if file exist...
-            depth = np.loadtxt(Depthtext)  # import depth.txt to be used in change_dep and change_dep_wk functions 
-            Ymin_vid.min = min(depth[0,:]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
-            Ymin_plt.min = min(depth[0,:]*-1)  
-            
-            Ymin_vid.value = min(depth[0,:]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
-            Ymin_plt.value = min(depth[0,:]*-1)
-        else:
-            pass
-        
     elif change['new'] == 'Significant Wave Height (Hsig)':
         #show
         Hsig_cols.layout.display=''
@@ -522,36 +427,7 @@ def toggle_choose_output(change):
         TimeLimit_text.value = steady_time.value + T_INTV_MEAN.value # the same is applied to video limits
         TimeLimit_text.step = T_INTV_MEAN.value   
         TimeLimit_text.max = time_text.value     
-        TimeLimit_text.min = steady_time.value + T_INTV_MEAN.value*2   
-        
-        # link X axis limits to THL (plot column)
-        Xmax_plt.max = THL.value
-        Xmin_plt.value = 0
-        Xmax_plt.value = THL.value
-        
-        # link X axis limits to THL (video column)
-        Xmax_vid.max = THL.value
-        Xmin_vid.value = 0
-        Xmax_plt.value = THL.value
-        
-        # link Y axis limits to depth (plot & video columns)
-        pwd = os.getcwd()  # get current path
-        s = title_text.value # project title given by the user (widget located in PRINCIPAL_TAB)
-        s = s.replace(" ", "_")
-        folder_name = s.replace(".", "_") # substitute ' ' space and '.' in project title with '_'
-
-        Depthtext = os.path.join(pwd,folder_name,'depth.txt') # path to depth.txt 
-        check_dir_dep = os.path.exists(Depthtext) # check if depth.txt exist
-
-        if check_dir_dep == True:         # if file exist...
-            depth = np.loadtxt(Depthtext)  # import depth.txt to be used in change_dep and change_dep_wk functions 
-            Ymin_vid.min = min(depth[0,:]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
-            Ymin_plt.min = min(depth[0,:]*-1)  
-            
-            Ymin_vid.value = min(depth[0,:]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
-            Ymin_plt.value = min(depth[0,:]*-1)
-        else:
-            pass
+        TimeLimit_text.min = steady_time.value + T_INTV_MEAN.value*2    
         
     elif change['new'] == 'Root Mean Square Wave Height (Hrms)':
         #show
@@ -582,34 +458,6 @@ def toggle_choose_output(change):
         TimeLimit_text.max = time_text.value     
         TimeLimit_text.min = steady_time.value + T_INTV_MEAN.value*2 
         
-        # link X axis limits to THL (plot column)
-        Xmax_plt.max = THL.value
-        Xmin_plt.value = 0
-        Xmax_plt.value = THL.value
-        
-        # link X axis limits to THL (video column)
-        Xmax_vid.max = THL.value
-        Xmin_vid.value = 0
-        Xmax_plt.value = THL.value
-        
-        # link Y axis limits to depth (plot & video columns)
-        pwd = os.getcwd()  # get current path
-        s = title_text.value # project title given by the user (widget located in PRINCIPAL_TAB)
-        s = s.replace(" ", "_")
-        folder_name = s.replace(".", "_") # substitute ' ' space and '.' in project title with '_'
-
-        Depthtext = os.path.join(pwd,folder_name,'depth.txt') # path to depth.txt 
-        check_dir_dep = os.path.exists(Depthtext) # check if depth.txt exist
-
-        if check_dir_dep == True:         # if file exist...
-            depth = np.loadtxt(Depthtext)  # import depth.txt to be used in change_dep and change_dep_wk functions 
-            Ymin_vid.min = min(depth[0,:]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
-            Ymin_plt.min = min(depth[0,:]*-1)  
-            
-            Ymin_vid.value = min(depth[0,:]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
-            Ymin_plt.value = min(depth[0,:]*-1)
-        else:
-            pass
         
     elif change['new'] == 'Average Wave Height (Havg)':
         #show
@@ -617,7 +465,8 @@ def toggle_choose_output(change):
         PLOT_label.value ='Press Button to Generate Havg Image at a Specific Time:'
         plot_time_label.value = "Plot Havg at time:"
         VIDEO_label.value = 'Press Button to Generate Havg Video:'
-           
+        
+        
         #hide
         vmean_cols.layout.display='none'
         umean_cols.layout.display='none'
@@ -639,35 +488,6 @@ def toggle_choose_output(change):
         TimeLimit_text.step = T_INTV_MEAN.value   
         TimeLimit_text.max = time_text.value     
         TimeLimit_text.min = steady_time.value + T_INTV_MEAN.value*2 
-        
-        # link X axis limits to THL (plot column)
-        Xmax_plt.max = THL.value
-        Xmin_plt.value = 0
-        Xmax_plt.value = THL.value
-        
-        # link X axis limits to THL (video column)
-        Xmax_vid.max = THL.value
-        Xmin_vid.value = 0
-        Xmax_plt.value = THL.value
-        
-        # link Y axis limits to depth (plot & video columns)
-        pwd = os.getcwd()  # get current path
-        s = title_text.value # project title given by the user (widget located in PRINCIPAL_TAB)
-        s = s.replace(" ", "_")
-        folder_name = s.replace(".", "_") # substitute ' ' space and '.' in project title with '_'
-
-        Depthtext = os.path.join(pwd,folder_name,'depth.txt') # path to depth.txt 
-        check_dir_dep = os.path.exists(Depthtext) # check if depth.txt exist
-
-        if check_dir_dep == True:         # if file exist...
-            depth = np.loadtxt(Depthtext)  # import depth.txt to be used in change_dep and change_dep_wk functions 
-            Ymin_vid.min = min(depth[0,:]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
-            Ymin_plt.min = min(depth[0,:]*-1)  
-            
-            Ymin_vid.value = min(depth[0,:]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
-            Ymin_plt.value = min(depth[0,:]*-1)
-        else:
-            pass
         
     else:
         #show Surface Elevation:
@@ -697,36 +517,8 @@ def toggle_choose_output(change):
         TimeLimit_text.value = plotInt_text.value
         plot_time.max = time_text.value
         TimeLimit_text.max = time_text.value
-        
-        # link X axis limits to THL (plot column)
-        Xmax_plt.max = THL.value
-        Xmin_plt.value = 0
-        Xmax_plt.value = THL.value
-        
-        # link X axis limits to THL (video column)
-        Xmax_vid.max = THL.value
-        Xmin_vid.value = 0
-        Xmax_plt.value = THL.value
 
-        # link Y axis limits to depth (plot & video columns)
-        pwd = os.getcwd()  # get current path
-        s = title_text.value # project title given by the user (widget located in PRINCIPAL_TAB)
-        s = s.replace(" ", "_")
-        folder_name = s.replace(".", "_") # substitute ' ' space and '.' in project title with '_'
 
-        Depthtext = os.path.join(pwd,folder_name,'depth.txt') # path to depth.txt 
-        check_dir_dep = os.path.exists(Depthtext) # check if depth.txt exist
-
-        if check_dir_dep == True:         # if file exist...
-            depth = np.loadtxt(Depthtext)  # import depth.txt to be used in change_dep and change_dep_wk functions 
-            Ymin_vid.min = min(depth[0,:]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
-            Ymin_plt.min = min(depth[0,:]*-1)  
-            
-            Ymin_vid.value = min(depth[0,:]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
-            Ymin_plt.value = min(depth[0,:]*-1)
-        else:
-            pass
-        
 ###--------------------------------------------       
 # activate functions               
 ETA.observe(toggle_output_ETA, 'value')   # add ETA to output list if turned on

@@ -13,7 +13,7 @@ from pyFiles.PRINCIPAL_TAB import principal_tab,title_text,space_box2,container_
 # ^ import tab structure & projects name
 from pyFiles.PrincipalTab_2 import time_text, plotInt_text     # total time and plot interval in (s)
 from pyFiles.PrincipalTab_3 import T_INTV_MEAN, steady_time    # Wave Height time interval & starting time
-from pyFiles.PrincipalTab_5 import TimeLimit_text,video_load,plot_time,out_list, Xmax_vid,Xmax_plt,Xmin_vid,Xmin_plt,Ymax_vid,Ymax_plt,Ymin_vid,Ymin_plt    # time values, axis limits and video loadbar widget
+from pyFiles.PrincipalTab_5 import TimeLimit_text,video_load,plot_time,out_list    # number of eta files and video loadbar widget
 
 def show_vid(folder_path, type_vid): # show video in notebook function
         
@@ -46,7 +46,7 @@ def generate_vid(folder_path, type_vid):   # run ffpmpeg function
     os.chdir(return_to_gui_folder) # return to GUI directory 
     show_vid(folder_path, type_vid) # call show video function
     
-def video_function(type_vid,ax,mwl,x,Lt,depth,files,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid): # generate video function
+def video_function(type_vid,ax,mwl,x,Lt,depth,files,postprocessDir,folder_path,fig,delta_time): # generate video function
     
     ## Plot Output
     ax.clear()    
@@ -67,7 +67,7 @@ def video_function(type_vid,ax,mwl,x,Lt,depth,files,postprocessDir,folder_path,f
         ax.plot(np.asarray(x),depth[0,:],'k',np.asarray(x),out_masked[0,:],'c',linewidth=1)
         ax.set_xlabel('X (m)',fontsize = 12, fontweight = 'bold')
         ax.set_ylabel(type_vid+' (m)',fontsize = 12, fontweight = 'bold')
-        ax.axis([Xmin_vid.value,Xmax_vid.value,Ymin_vid.value,Ymax_vid.value])
+        ax.axis([-1.5,Lt,min(depth[1,:])-.1,min(depth[1,:])+15])
 
         # Water Fill:
         ax.fill_between(x, depth[0,:], out_masked[0,:],
@@ -136,7 +136,7 @@ def video_function(type_vid,ax,mwl,x,Lt,depth,files,postprocessDir,folder_path,f
     
     generate_vid(folder_path, type_vid_name)
     
-def plot_function(type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig,Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt): # plot output function
+def plot_function(type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig): # plot output function
   
     ## Plot Output
     ax.clear()
@@ -157,7 +157,7 @@ def plot_function(type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fi
         ax.plot(np.asarray(x),depth[0,:],'k',np.asarray(x),out_masked[0,:],'c',linewidth=1)
         ax.set_xlabel('X (m)',fontsize = 12, fontweight = 'bold')
         ax.set_ylabel(type_out+' (m)',fontsize = 12, fontweight = 'bold')
-        ax.axis([Xmin_plt.value,Xmax_plt.value,Ymin_plt.value,Ymax_plt.value])
+        ax.axis([-1.5,Lt,min(out_masked[0,:])-.1,max(out_masked[0,:])+.1])
 
         # Water Fill:
         ax.fill_between(x, depth[0,:], out_masked[0,:],
@@ -173,7 +173,7 @@ def plot_function(type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fi
     display(fig) 
    
     
-def save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig,Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt): # save plot function
+def save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig): # save plot function
     
     ## Plot Output
     ax.clear()
@@ -194,7 +194,7 @@ def save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folde
         ax.plot(np.asarray(x),depth[0,:],'k',np.asarray(x),out_masked[0,:],'c',linewidth=1)
         ax.set_xlabel('X (m)',fontsize = 12, fontweight = 'bold')
         ax.set_ylabel(type_out+' (m)',fontsize = 12, fontweight = 'bold')
-        ax.axis([Xmin_plt.value,Xmax_plt.value,Ymin_plt.value,Ymax_plt.value])
+        ax.axis([-1.5,Lt,min(out_masked[0,:])-.1,max(out_masked[0,:])+.1])
 
         # Water Fill:
         ax.fill_between(x, depth[0,:], out_masked[0,:],
@@ -248,31 +248,31 @@ def plot_output_clicked(variable):    # plot results
     
     if out_list.value == 'Surface Elevation': #if the chosen output option is ETA
         type_out = 'eta'
-        plot_function(type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig,Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        plot_function(type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig)
         
     elif out_list.value == 'Surface Elevation Mean': #if the chosen output option is ETA mean
         type_out = 'etamean'
-        plot_function(type_out,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_name,fig,Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        plot_function(type_out,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_name,fig)
         
     elif out_list.value == 'Average Wave Height (Havg)':# if the chosen output option is Havg
         type_out = 'havg'
-        plot_function(type_out,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_name,fig,Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        plot_function(type_out,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_name,fig)
     
     elif out_list.value =='Significant Wave Height (Hsig)':#if the chosen output option is Hsig
         type_out = 'hsig'
-        plot_function(type_out,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_name,fig,Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        plot_function(type_out,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_name,fig)
     
     elif out_list.value =='Root Mean Square Wave Height (Hrms)':# if the chosen output option is Hrms
         type_out = 'hrms'
-        plot_function(type_out,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_name,fig,Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        plot_function(type_out,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_name,fig)
         
     elif out_list.value =='Maximum surface elevation (Hmax)':# if the chosen output option is Hmax
         type_out = 'hmax'
-        plot_function(type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig,Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        plot_function(type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig)
         
     elif out_list.value =='Minimum surface elevation (Hmin)': # if the chosen output option is Hmin
         type_out = 'hmin'
-        plot_function(type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig,Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        plot_function(type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig)
     
     else:
         pass
@@ -310,31 +310,31 @@ def save_plot_clicked(variable):    # save output plot results
     
     if out_list.value == 'Surface Elevation': #if the chosen output option is ETA, go to saveETA function
         type_out = 'eta'
-        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig, Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig)
         
     elif out_list.value == 'Surface Elevation Mean': #if the chosen output option is ETA mean, go to saveETAmean function
         type_out = 'etamean'
-        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_name,fig, Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_name,fig)
         
     elif out_list.value == 'Average Wave Height (Havg)':# if the chosen output option is Havg, go to saveHsig function
         type_out = 'havg'
-        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_name,fig, Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_name,fig)
     
     elif out_list.value =='Significant Wave Height (Hsig)':#if the chosen output option is Hsig, go to saveHsig function
         type_out = 'hsig'
-        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_name,fig, Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_name,fig)
     
     elif out_list.value =='Root Mean Square Wave Height (Hrms)':# if the chosen output option is Hrms, go to saveHsig function
         type_out = 'hrms'
-        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_name,fig, Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_name,fig)
         
     elif out_list.value =='Maximum surface elevation (Hmax)':# if the chosen output option is Hmax, go to saveHsig function
         type_out = 'hmax'
-        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig, Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig)
         
     elif out_list.value =='Minimum surface elevation (Hmin)': # if the chosen output option is Hmin, go to saveHsig function
         type_out = 'hmin'
-        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig, Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig)
     
     else:
         pass
@@ -372,37 +372,37 @@ def runVID_function(variable):   # generate video of plots
     if out_list.value == 'Surface Elevation': #if the chosen output option is ETA, go to video ETA function
         type_vid = "eta"
         delta_time = 'PLOT_INT' # output time interval increases by plot_int variable
-        video_function(type_vid,ax,mwl,x,Lt,depth,files,postprocessDir,folder_path,fig,delta_time,Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid)  
+        video_function(type_vid,ax,mwl,x,Lt,depth,files,postprocessDir,folder_path,fig,delta_time)  
                
     elif out_list.value == 'Surface Elevation Mean': #if the chosen output option is ETA mean, go to videoETAmean function
         type_vid = "etamean"
         delta_time = 'T_INT' # output time interval increases by T_int variable
-        video_function(type_vid,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid) 
+        video_function(type_vid,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_path,fig,delta_time) 
                 
     elif out_list.value == 'Average Wave Height (Havg)':# if the chosen output option is Havg, go to videoHsig function
         type_vid = "havg"
         delta_time = 'T_INT' # output time interval increases by T_int variable
-        video_function(type_vid,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid) 
+        video_function(type_vid,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_path,fig,delta_time) 
                 
     elif out_list.value =='Significant Wave Height (Hsig)':#if the chosen output option is Hsig, go to videoHsig function
         type_vid = "hsig"
         delta_time = 'T_INT' # output time interval increases by T_int variable
-        video_function(type_vid,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid) 
+        video_function(type_vid,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_path,fig,delta_time) 
                 
     elif out_list.value =='Root Mean Square Wave Height (Hrms)':# if the chosen output option is Hrms, go to videoHsig function
         type_vid = "hrms"
         delta_time = 'T_INT' # output time interval increases by T_int variable
-        video_function(type_vid,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid) 
+        video_function(type_vid,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_path,fig,delta_time) 
                 
     elif out_list.value =='Maximum surface elevation (Hmax)':# if the chosen output option is Hmax, go to videoHsig function
         type_vid = "hmax"
         delta_time = 'PLOT_INT' # output time interval increases by plot_int variable
-        video_function(type_vid,ax,mwl,x,Lt,depth,files,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid) 
+        video_function(type_vid,ax,mwl,x,Lt,depth,files,postprocessDir,folder_path,fig,delta_time) 
                 
     elif out_list.value =='Minimum surface elevation (Hmin)': # if the chosen output option is Hmin, go to videoHsig function
         type_vid = "hmin"
         delta_time = 'PLOT_INT' # output time interval increases by plot_int variable
-        video_function(type_vid,ax,mwl,x,Lt,depth,files,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid) 
+        video_function(type_vid,ax,mwl,x,Lt,depth,files,postprocessDir,folder_path,fig,delta_time) 
                 
     else:
         pass
