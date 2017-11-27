@@ -359,7 +359,7 @@ def toggle_choose_output(change):
         # link X axis limits to THL (video column)
         Xmax_vid.max = THL.value
         Xmin_vid.value = 0
-        Xmax_plt.value = THL.value
+        Xmax_vid.value = THL.value
         
         # link Y axis limits to depth (plot & video columns)
         pwd = os.getcwd()  # get current path
@@ -417,7 +417,7 @@ def toggle_choose_output(change):
         # link X axis limits to THL (video column)
         Xmax_vid.max = THL.value
         Xmin_vid.value = 0
-        Xmax_plt.value = THL.value
+        Xmax_vid.value = THL.value
         
         # link Y axis limits to depth (plot & video columns)
         pwd = os.getcwd()  # get current path
@@ -474,7 +474,7 @@ def toggle_choose_output(change):
         # link X axis limits to THL (video column)
         Xmax_vid.max = THL.value
         Xmin_vid.value = 0
-        Xmax_plt.value = THL.value
+        Xmax_vid.value = THL.value
         
         # link Y axis limits to depth (plot & video columns)
         pwd = os.getcwd()  # get current path
@@ -532,7 +532,7 @@ def toggle_choose_output(change):
         # link X axis limits to THL (video column)
         Xmax_vid.max = THL.value
         Xmin_vid.value = 0
-        Xmax_plt.value = THL.value
+        Xmax_vid.value = THL.value
         
         # link Y axis limits to depth (plot & video columns)
         pwd = os.getcwd()  # get current path
@@ -590,7 +590,7 @@ def toggle_choose_output(change):
         # link X axis limits to THL (video column)
         Xmax_vid.max = THL.value
         Xmin_vid.value = 0
-        Xmax_plt.value = THL.value
+        Xmax_vid.value = THL.value
         
         # link Y axis limits to depth (plot & video columns)
         pwd = os.getcwd()  # get current path
@@ -648,7 +648,7 @@ def toggle_choose_output(change):
         # link X axis limits to THL (video column)
         Xmax_vid.max = THL.value
         Xmin_vid.value = 0
-        Xmax_plt.value = THL.value
+        Xmax_vid.value = THL.value
         
         # link Y axis limits to depth (plot & video columns)
         pwd = os.getcwd()  # get current path
@@ -706,7 +706,7 @@ def toggle_choose_output(change):
         # link X axis limits to THL (video column)
         Xmax_vid.max = THL.value
         Xmin_vid.value = 0
-        Xmax_plt.value = THL.value
+        Xmax_vid.value = THL.value
 
         # link Y axis limits to depth (plot & video columns)
         pwd = os.getcwd()  # get current path
