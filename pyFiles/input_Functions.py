@@ -180,7 +180,7 @@ def wave_param_generate_input(wave_maker_parameters):
         parameter = """Xc = %4.2f
 Yc = %4.2f
 AMP = %4.2f
-!WID = %4.2f""" % (xc.value,yc.value,amp.value,wid.value)
+WID = %4.2f""" % (xc.value,yc.value,amp.value,wid.value)
         wave_maker_parameters.value = parameter
         
     elif wave_maker.value == 'JON_1D':
@@ -224,7 +224,7 @@ ThetaPeak = %4.2f
         parameter = """AMP = %4.2f
 Xc = %4.2f
 Yc = %4.2f
-!WID = %4.2f
+WID = %4.2f
         """ % (amp.value,xc.value,yc.value,wid.value)
         wave_maker_parameters.value = parameter
         

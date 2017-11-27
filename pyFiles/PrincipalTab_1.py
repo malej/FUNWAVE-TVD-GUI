@@ -5,7 +5,7 @@ from traitlets import link
 #### Tabs for Principal Tab 1: Bathymetry development ####
 ##########################################################
 
-space_box2 = widgets.Box(layout=widgets.Layout(height ='25px')) # box created to have space among widgets
+space_box = widgets.Box(layout=widgets.Layout(height ='25px')) # box created to have space among widgets
 
 # bathymetry dropdown widget
 label_intro = widgets.HTML("""Specify the type of One-Dimensional Bathymetry:""",
@@ -31,7 +31,7 @@ THL = widgets.BoundedFloatText(description='THL',min = '10',value='200',max='150
 file_name_box = widgets.HBox([bathy_name,upload_bathy_name,THL],
                           layout=widgets.Layout(height ='100px'))
 
-Box_upload = widgets.VBox([label_intro1,space_box2,file_name_box],
+Box_upload = widgets.VBox([label_intro1,space_box,file_name_box],
                           layout=widgets.Layout(height ='500px'))
 
 ######################################
@@ -64,7 +64,7 @@ label_NOTE = widgets.HTML("""<b>NOTE:</b> Depth values are [-] for underwater an
 ## vertex elevation and location floatsliders:
 # vertex 1 
 v1_label = widgets.HTML("<b>Vertex #1<b/>")
-MWL = widgets.FloatSlider(description='Elevation ',min=-10, max=20,value = -10,
+MWL = widgets.FloatSlider(description='Elevation ',min=-10, max=15,value = -10,
                     step='0.01',layout = widgets.Layout(width='100%',height = '50px')) #V1 elev = mean water level
 label_v1_loc = widgets.HTML("""Located at <b>0.0 meters</b>.""")     # vert1 loc = 0.0m
 v1_box = widgets.VBox([v1_label,MWL,label_v1_loc],layout=widgets.Layout(display='flex-grow',
@@ -80,7 +80,7 @@ vert2_loc = widgets.FloatSlider(max=THL.value, min=0,value=10,
 # link THL value to vertex 2 location
 widgets.jsdlink((THL,'value'),(vert2_loc,'max'))
 
-vert2_elev = widgets.FloatSlider(min=MWL.value, max=MWL.value*-1,value = MWL.value,
+vert2_elev = widgets.FloatSlider(min=MWL.value, max=15,value = MWL.value,
                     step='0.01', layout=MWL.layout,
                     description = 'Elevation ')  
 
@@ -88,7 +88,7 @@ v2_box = widgets.VBox([v2_label,vert2_elev,vert2_loc],layout=v1_box.layout)
 
 # vertex 3
 v3_label = widgets.HTML("<b>Vertex #3<b/>")
-vert3_elev = widgets.FloatSlider(min=MWL.value, max=MWL.value*-1,value = MWL.value,
+vert3_elev = widgets.FloatSlider(min=MWL.value, max=15,value = MWL.value,
                     step='0.01', layout=MWL.layout,
                     description = 'Elevation')
 label_v3_loc = widgets.HTML("""Located at <b>THL</b> distance.""")  # vert3 loc = THL
@@ -98,8 +98,8 @@ v3_box = widgets.VBox([v3_label,vert3_elev,label_v3_loc],layout=v1_box.layout)
 VERT_box = widgets.HBox([v1_box,v2_box,v3_box])
 
 # slope container box
-Box_SlopeBathy = widgets.VBox(children=[label_intro2,space_box2,domain_box,space_box2,
-                                        label_NOTE,VERT_box,space_box2])
+Box_SlopeBathy = widgets.VBox(children=[label_intro2,space_box,domain_box,space_box,
+                                        label_NOTE,VERT_box,space_box])
 
 ######################################
 ### Option #1c: Flat Bathy Gen ######
@@ -115,8 +115,8 @@ button and proceed to Step #2.<br>The values are in <b>metric</b> units.""",
                            layout=widgets.Layout(width='90%'))
 
 # slope container box
-Box_FlatBathy = widgets.VBox(children=[label_intro3,space_box2,domain_box,space_box2,MWL,space_box2,
-                                        label_NOTE,space_box2])
+Box_FlatBathy = widgets.VBox(children=[label_intro3,space_box,domain_box,space_box,MWL,space_box,
+                                        label_NOTE,space_box])
 
 
 # box that shows the "chosen bathy type" widgets
