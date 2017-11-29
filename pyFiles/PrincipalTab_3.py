@@ -49,7 +49,7 @@ Umean = widgets.Checkbox(description='Umean',value=False)
 # Vmean widget 
 Vmean = widgets.Checkbox(description='Vmean',value=False)
 
-container_col1 = widgets.VBox(children=[DEPTH_OUT,ETA,ETAmean,U,V,Umax,Umean,Vmean,Hmax,Hmin,MFmax,VORmax]) 
+container_col1 = widgets.VBox(children=[DEPTH_OUT,ETA,ETAmean,Hmax,Hmin,U,V,Umax,Umean,Vmean,MFmax,VORmax]) 
 
 ## column 2 of output tab:
 
@@ -89,7 +89,7 @@ AGE = widgets.Checkbox(description='AGE',value=False)
 # WaveHeight 
 WaveHeight = widgets.Checkbox(description='Wave H',value=False)
 
-container_col2 = widgets.VBox(children=[MASK9,SourceX,SourceY,P,Q,Fx,Fy,Gx,Gy,AGE,WaveHeight])   
+container_col2 = widgets.VBox(children=[WaveHeight,SourceX,SourceY,P,Q,Fx,Fy,Gx,Gy,AGE,MASK9])   
                                         
 
 ## column 3 of output tab:
@@ -98,14 +98,14 @@ col_3_note = widgets.HTML("""<b>NOTE:</b> Input <b>Starting Time</b> and <b>T_IN
                                                   
 # Steady time widget container (label & bounded float text)
 label_steady_time = widgets.Label('Starting Time (STEADY_TIME):',layout = widgets.Layout(width = "90%"))
-steady_time = widgets.BoundedFloatText(value = 1,layout = widgets.Layout(width = "70%",height = '70px'))
+steady_time = widgets.BoundedFloatText(min = 1, value = 1,layout = widgets.Layout(width = "70%",height = '70px'))
 container_steadyTime = widgets.VBox(children=[label_steady_time,steady_time]) 
 
 link((time_text,'value'), (steady_time, 'max'))
 
 # T_INTV_mean widget container (label & bounded float text)
 label_TIntvMean = widgets.Label('Time Interval (T_INTV_mean):',layout = label_steady_time.layout)
-T_INTV_MEAN = widgets.BoundedFloatText(value = 1,layout = steady_time.layout)
+T_INTV_MEAN = widgets.BoundedFloatText(min = 1, value = 1,layout = steady_time.layout)
 container_TIntvMean = widgets.VBox(children=[label_TIntvMean,T_INTV_MEAN])
 
 container_col3 = widgets.VBox([col_3_note,space_box, container_steadyTime,container_TIntvMean],
