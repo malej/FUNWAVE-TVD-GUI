@@ -13,7 +13,7 @@ from pyFiles.PRINCIPAL_TAB import principal_tab,title_text,space_box2,container_
 # ^ import tab structure & projects name
 from pyFiles.PrincipalTab_2 import time_text, plotInt_text     # total time and plot interval in (s)
 from pyFiles.PrincipalTab_3 import T_INTV_MEAN, steady_time    # Wave Height time interval & starting time
-from pyFiles.PrincipalTab_5 import TimeLimit_text,video_load,plot_time,out_list, Xmax_vid,Xmax_plt,Xmin_vid,Xmin_plt,Ymax_vid,Ymax_plt,Ymin_vid,Ymin_plt    # time values, axis limits and video loadbar widget
+from pyFiles.PrincipalTab_5 import TimeBegin_text,TimeLimit_text,video_load,plot_time,out_list, Xmax_vid,Xmax_plt,Xmin_vid,Xmin_plt,Ymax_vid,Ymax_plt,Ymin_vid,Ymin_plt,FrameSec    # time values, axis limits and video loadbar widget
 
 def show_vid(folder_path, type_vid): # show video in notebook function
         
@@ -35,7 +35,7 @@ def generate_vid(folder_path, type_vid):   # run ffpmpeg function
     os.chdir(folder_path) # move to directory where the images are located (output_plots directory)
     
     # set fmpeg command line depending on the video type (eta, wave height, hmax, etc...)
-    string1 = "ffmpeg -r 2 -y -i %s" % (type_vid)
+    string1 = "ffmpeg -r %d -y -i %s" % (FrameSec.value,type_vid)
     string2 = "%5d.png -s 815x735 "
     string3 = "%sMovie.mp4" % (type_vid)
     run_ffmpeg = string1+string2+string3
@@ -46,12 +46,12 @@ def generate_vid(folder_path, type_vid):   # run ffpmpeg function
     os.chdir(return_to_gui_folder) # return to GUI directory 
     show_vid(folder_path, type_vid) # call show video function
     
-def video_function(type_vid,ax,mwl,x,Lt,depth,files,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid): # generate video function
+def video_function(type_vid,ax,mwl,x,Lt,depth,files_start,files_end,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid): # generate video function
     
     ## Plot Output
     ax.clear()    
-    for num in range(int(files[0])):
-        fnum = '%.5d' % (num+1)
+    for num in range(int(files_start[0]),int(files_end[0])+1):
+        fnum = '%.5d' % (num)
         
         type_vid_name = type_vid + '_' # output type file name
         output_path = os.path.join(postprocessDir,type_vid_name) # path to output file
@@ -80,59 +80,58 @@ def video_function(type_vid,ax,mwl,x,Lt,depth,files,postprocessDir,folder_path,f
                                        hatch = 'X')
         # Time Annotations:
         if delta_time == 'PLOT_INT': # if the output time interval increases by plot_int variable
-            ax.set_title('Time: %4.2f sec'%((num+1)*plotInt_text.value-plotInt_text.value),fontsize = 16)
+            ax.set_title('Time: %4.2f sec'%((num)*plotInt_text.value-plotInt_text.value),fontsize = 16)
             
         else: # if the output time interval increases by T_int variable
-            ax.set_title('Time: %4.2f sec'%((num+1)*T_INTV_MEAN.value+steady_time.value),fontsize = 16)
+            ax.set_title('Time: %4.2f sec'%((num)*T_INTV_MEAN.value+steady_time.value),fontsize = 16)
 
-        if num+1 < 10:
-            fileIndex = '0'+str(num+1)
+        NUM = num-int(files_start[0])+1 # to save files starting from 01 (so that ffmpeg can read them) 
+            
+        # video load bar progress description:
+        video_load.min = 0
+        video_load.max = int(files_end[0])
+        
+        
+        if NUM < 10:
+            fileIndex = '0'+str(NUM)
             fileName = '{0}000{1:s}'.format(type_vid_name,fileIndex)
             file_path = os.path.join(folder_path,fileName)
             fig.savefig(file_path, ext="png", bbox_inches='tight')
 
 
             # video load bar progress description:
-            video_load.min = 0 
-            video_load.max = int(files[0])
-            video_load.value = num+1
-            video_load.description = '%d/%d'%(num+1,int(files[0]))
-
-        elif num+1 < 100:
-            fileIndex = str(num+1)
+            video_load.value = num
+            video_load.description = '%d/%d'%(num,int(files_end[0]))
+            
+        elif NUM < 100:
+            fileIndex = str(NUM)
             fileName = '{0}000{1:s}'.format(type_vid_name,fileIndex)
             file_path = os.path.join(folder_path,fileName)
             fig.savefig(file_path, ext="png", bbox_inches='tight')
 
-            # video load bar progress description:
-            video_load.min = 0 
-            video_load.max = int(files[0])
-            video_load.value = num+1
-            video_load.description = '%d/%d'%(num+1,int(files[0]))
+            # video load bar progress description: 
+            video_load.value = num
+            video_load.description = '%d/%d'%(num,int(files_end[0]))
 
-        elif num+1 < 1000: 
-            fileIndex = str(num+1)
+        elif NUM < 1000: 
+            fileIndex = str(NUM)
             fileName = '{0}00{1:s}'.format(type_vid_name,fileIndex)
             file_path = os.path.join(folder_path,fileName)
             fig.savefig(file_path, ext="png", bbox_inches='tight')
 
             # video load bar progress description:
-            video_load.min = 0 
-            video_load.max = int(files[0])
-            video_load.value = num+1
-            video_load.description = '%d/%d'%(num+1,int(files[0]))
+            video_load.value = num
+            video_load.description = '%d/%d'%(num,int(files_end[0]))
 
         else: 
-            fileIndex = str(num+1)
+            fileIndex = str(NUM)
             fileName = '{0}0{1:s}'.format(type_vid_name,fileIndex)
             file_path = os.path.join(folder_path,fileName)
             fig.savefig(file_path, ext="png", bbox_inches='tight')
 
             # video load bar progress description:
-            video_load.min = 0 
-            video_load.max = int(files[0])
-            video_load.value = num+1
-            video_load.description = '%d/%d'%(num+1,int(files[0]))  
+            video_load.value = num
+            video_load.description = '%d/%d'%(num,int(files_end[0]))   
     
     generate_vid(folder_path, type_vid_name)
     
@@ -220,7 +219,11 @@ def plot_output_clicked(variable):    # plot results
     
     fig, ax = plt.subplots(figsize=(15,5), dpi=200)
     plt.close(fig)
-    files = [(plot_time.value/plotInt_text.value) + 1] # number of files for eta, hmin & hmax
+    
+    # File type 1: their interval is pltIntv_text (e.g. eta, Hmax, Hmin...)
+    files1 = [(plot_time.value/plotInt_text.value) + 1] # number of files for eta, hmin & hmax
+    
+    # File type 2: their interval is T_INTV_MEAN (e.g. eta_mean, Hsig, Hrms, Havg...) 
     files2 = [(plot_time.value/T_INTV_MEAN.value)-(steady_time.value/T_INTV_MEAN.value)] # number of files for etaMean & wave height
 
     pwd = os.getcwd()  # get current path
@@ -248,7 +251,7 @@ def plot_output_clicked(variable):    # plot results
     
     if out_list.value == 'Surface Elevation': #if the chosen output option is ETA
         type_out = 'eta'
-        plot_function(type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig,Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        plot_function(type_out,ax,mwl,x,Lt,depth,files1,postprocessDir,folder_name,fig,Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
         
     elif out_list.value == 'Surface Elevation Mean': #if the chosen output option is ETA mean
         type_out = 'etamean'
@@ -268,11 +271,11 @@ def plot_output_clicked(variable):    # plot results
         
     elif out_list.value =='Maximum surface elevation (Hmax)':# if the chosen output option is Hmax
         type_out = 'hmax'
-        plot_function(type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig,Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        plot_function(type_out,ax,mwl,x,Lt,depth,files1,postprocessDir,folder_name,fig,Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
         
     elif out_list.value =='Minimum surface elevation (Hmin)': # if the chosen output option is Hmin
         type_out = 'hmin'
-        plot_function(type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig,Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        plot_function(type_out,ax,mwl,x,Lt,depth,files1,postprocessDir,folder_name,fig,Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
     
     else:
         pass
@@ -282,7 +285,11 @@ def save_plot_clicked(variable):    # save output plot results
     
     fig, ax = plt.subplots(figsize=(15,5), dpi=200)
     plt.close(fig)
-    files = [(plot_time.value/plotInt_text.value) + 1] # number of files for eta, hmin & hmax
+    
+    # File type 1: their interval is pltIntv_text (e.g. eta, Hmax, Hmin...)
+    files1 = [(plot_time.value/plotInt_text.value) + 1] # number of files for eta, hmin & hmax
+    
+    # File type 2: their interval is T_INTV_MEAN (e.g. eta_mean, Hsig, Hrms, Havg...) 
     files2 = [(plot_time.value/T_INTV_MEAN.value)-(steady_time.value/T_INTV_MEAN.value)] # number of files for etaMean & wave height
 
     pwd = os.getcwd()  # get current path
@@ -310,7 +317,7 @@ def save_plot_clicked(variable):    # save output plot results
     
     if out_list.value == 'Surface Elevation': #if the chosen output option is ETA, go to saveETA function
         type_out = 'eta'
-        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig, Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files1,postprocessDir,folder_name,fig, Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
         
     elif out_list.value == 'Surface Elevation Mean': #if the chosen output option is ETA mean, go to saveETAmean function
         type_out = 'etamean'
@@ -330,11 +337,11 @@ def save_plot_clicked(variable):    # save output plot results
         
     elif out_list.value =='Maximum surface elevation (Hmax)':# if the chosen output option is Hmax, go to saveHsig function
         type_out = 'hmax'
-        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig, Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files1,postprocessDir,folder_name,fig, Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
         
     elif out_list.value =='Minimum surface elevation (Hmin)': # if the chosen output option is Hmin, go to saveHsig function
         type_out = 'hmin'
-        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files,postprocessDir,folder_name,fig, Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
+        save_plot_function(pwd,type_out,ax,mwl,x,Lt,depth,files1,postprocessDir,folder_name,fig, Xmax_plt,Xmin_plt,Ymax_plt,Ymin_plt)
     
     else:
         pass
@@ -343,8 +350,20 @@ def runVID_function(variable):   # generate video of plots
     
     fig, ax = plt.subplots(figsize=(15,5), dpi=200)
     plt.close(fig)
-    files = [(TimeLimit_text.value/plotInt_text.value) + 1] # number of files for eta, hmin & hmax
-    files2 = [(TimeLimit_text.value/T_INTV_MEAN.value)-(steady_time.value/T_INTV_MEAN.value)] # number of files for etaMean & wave height
+    
+    # File type 1: their interval is pltIntv_text (e.g. eta, Hmax, Hmin...) 
+    files1_start = [(TimeBegin_text.value/plotInt_text.value) + 1]
+    # ^ file number for video start time (TimeBegin_text variable in PrincipalTab_5)
+    files1_end = [(TimeLimit_text.value/plotInt_text.value) + 1] 
+    # ^ file number for video ending time (TimeLimit_text variable in PrincipalTab_5)
+    
+    # File type 2: their interval is T_INTV_MEAN (e.g. eta_mean, Hsig, Hrms, Havg...) 
+    files2_start = [(TimeBegin_text.value/T_INTV_MEAN.value)-(steady_time.value/T_INTV_MEAN.value)] 
+    # ^ file number for video start time (TimeBegin_text variable in PrincipalTab_5)
+    files2_end = [(TimeLimit_text.value/T_INTV_MEAN.value)-(steady_time.value/T_INTV_MEAN.value)] 
+    # ^ file number for video ending time (TimeLimit_text variable in PrincipalTab_5)
+    
+    
     pwd = os.getcwd()  # get current path
     s = title_text.value # project title given by the user (widget located in PRINCIPAL_TAB)
     s = s.replace(" ", "_")
@@ -372,12 +391,12 @@ def runVID_function(variable):   # generate video of plots
     if out_list.value == 'Surface Elevation': #if the chosen output option is ETA, go to video ETA function
         type_vid = "eta"
         delta_time = 'PLOT_INT' # output time interval increases by plot_int variable
-        video_function(type_vid,ax,mwl,x,Lt,depth,files,postprocessDir,folder_path,fig,delta_time,Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid)  
+        video_function(type_vid,ax,mwl,x,Lt,depth,files1_start,files1_end,postprocessDir,folder_path,fig,delta_time,Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid)  
                
     elif out_list.value == 'Surface Elevation Mean': #if the chosen output option is ETA mean, go to videoETAmean function
         type_vid = "etamean"
         delta_time = 'T_INT' # output time interval increases by T_int variable
-        video_function(type_vid,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid) 
+        video_function(type_vid,ax,mwl,x,Lt,depth,files2_start,files2_end,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid) 
                 
     elif out_list.value == 'Average Wave Height (Havg)':# if the chosen output option is Havg, go to videoHsig function
         type_vid = "havg"
@@ -387,22 +406,22 @@ def runVID_function(variable):   # generate video of plots
     elif out_list.value =='Significant Wave Height (Hsig)':#if the chosen output option is Hsig, go to videoHsig function
         type_vid = "hsig"
         delta_time = 'T_INT' # output time interval increases by T_int variable
-        video_function(type_vid,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid) 
+        video_function(type_vid,ax,mwl,x,Lt,depth,files2_start,files2_end,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid) 
                 
     elif out_list.value =='Root Mean Square Wave Height (Hrms)':# if the chosen output option is Hrms, go to videoHsig function
         type_vid = "hrms"
         delta_time = 'T_INT' # output time interval increases by T_int variable
-        video_function(type_vid,ax,mwl,x,Lt,depth,files2,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid) 
+        video_function(type_vid,ax,mwl,x,Lt,depth,files2_start,files2_end,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid) 
                 
     elif out_list.value =='Maximum surface elevation (Hmax)':# if the chosen output option is Hmax, go to videoHsig function
         type_vid = "hmax"
         delta_time = 'PLOT_INT' # output time interval increases by plot_int variable
-        video_function(type_vid,ax,mwl,x,Lt,depth,files,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid) 
+        video_function(type_vid,ax,mwl,x,Lt,depth,files1_start,files1_end,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid) 
                 
     elif out_list.value =='Minimum surface elevation (Hmin)': # if the chosen output option is Hmin, go to videoHsig function
         type_vid = "hmin"
         delta_time = 'PLOT_INT' # output time interval increases by plot_int variable
-        video_function(type_vid,ax,mwl,x,Lt,depth,files,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid) 
+        video_function(type_vid,ax,mwl,x,Lt,depth,files1_start,files1_end,postprocessDir,folder_path,fig,delta_time, Xmax_vid,Xmin_vid,Ymax_vid,Ymin_vid) 
                 
     else:
         pass

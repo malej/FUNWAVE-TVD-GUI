@@ -47,7 +47,7 @@ space_step_box = widgets.HBox([space_box2,step_box]) # box containing the steps 
 
 # Number of processors widget container (label & textbox)
 label_processors = widgets.Label('Number of Processors:')
-processors_text = widgets.BoundedFloatText(max = '32', min = '4',layout = widgets.Layout(width = "50%"))
+processors_text = widgets.BoundedFloatText(max = '36', min = '4',layout = widgets.Layout(width = "50%"))
 container_processors = widgets.VBox(children=[label_processors,processors_text],
                                     layout = widgets.Layout(width = "30%"))
 
@@ -59,7 +59,7 @@ container_time = widgets.VBox(children=[label_time,time_text],
 
 # Total project time widget container (label & textbox)
 label_plotInt = widgets.Label('Plot Interval (sec):')
-plotInt_text = widgets.BoundedFloatText(max=3600, layout=processors_text.layout) # plot time max = 1 hr
+plotInt_text = widgets.BoundedFloatText(max=3600,min=1,value=5,layout=processors_text.layout) # plot time max = 1 hr
 container_pltint = widgets.VBox(children=[label_plotInt,plotInt_text],
                                 layout = widgets.Layout(width = "30%")) 
 
@@ -68,7 +68,7 @@ container_proc_time = widgets.HBox([space_box2,container_processors,container_ti
 
 # tab 2a container box
 page_inputIntro = widgets.VBox(children=[label_input_INTRO,space_step_box,space_box1,space_box1,
-                              container_proc_time],layout = widgets.Layout(width = "90%",height = '465px',
+                              container_proc_time],layout = widgets.Layout(width = "90%",height = '487px',
                                                               align_items = 'stretch' ))
 
 #####################################
@@ -128,7 +128,7 @@ init = widgets.VBox(children=[label_iniCond1,space_box,container_iniElev,
 
 # tab 2b container box
 page_iniCond = widgets.VBox([label_iniCond,space_box,show_initial, init],
-                            layout = widgets.Layout(width = "90%",height = '465px',align_items = 'stretch' ))
+                            layout = widgets.Layout(width = "90%",height = '487px',align_items = 'stretch' ))
   
 
 ############################
@@ -223,7 +223,7 @@ container_ywidth_wk = widgets.HBox(children=[ywidth_wk_label,ywidth_wk],
                                layout = widgets.Layout(height = '45px'))
 
 deltaWK_label = widgets.Label('DELTA_WK',layout = widgets.Layout(width = "20%"))
-deltaWK = widgets.BoundedFloatText(min=0,max=5,step=0.1,layout = widgets.Layout(width = "30%")) #  usually, delta =  0.3 to 0.6
+deltaWK = widgets.BoundedFloatText(min=0,max=5,step=0.1,value = 0.3,layout = widgets.Layout(width = "30%")) #  usually, delta =  0.3 to 0.6
 container_deltaWK = widgets.HBox(children=[deltaWK_label,deltaWK],
                              layout = widgets.Layout(height = '45px'))
 
@@ -330,7 +330,7 @@ page_waveMaker = widgets.VBox(children=[wave_container,label_waveMaker,container
                              container_Gauss,container_IniSol,
                              container_WkReg,container_JON1D,container_JON2D,
                              container_WKIRR,container_TMA_1D],
-                             layout = widgets.Layout(height = '465px',width = '90%'))
+                             layout = widgets.Layout(height = '487px',width = '90%'))
 
 ###############################
 #### Tab #2d: Sponge layer ####
@@ -425,7 +425,7 @@ container_totalColumns = widgets.HBox(children=[container_SpongeLayer_column1,
 
 # tab 2d container box
 page_spongeLayer = widgets.VBox([sponge_label,container_totalColumns],
-                                layout = widgets.Layout(width = "90%",height = '465px'))
+                                layout = widgets.Layout(width = "90%",height = '487px'))
 
 #######################################################################
 #### NOTE: Tab #2e: Output Options is located in PrincipalTab_3.py ####

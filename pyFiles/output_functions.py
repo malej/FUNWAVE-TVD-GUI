@@ -20,7 +20,7 @@ from pyFiles.PrincipalTab_2 import time_text, plotInt_text
 from pyFiles.PrincipalTab_3 import DEPTH_OUT, U, V, ETA, Hmax, Hmin, MFmax, Umax, VORmax, Umean, Vmean, ETAmean, MASK, MASK9, SourceX, SourceY, P, Q, Fx, Fy, Gx, Gy, AGE, WaveHeight, steady_time, T_INTV_MEAN
 
 # import pertinent variables from principal tab 5 (output-post-processing tab)
-from pyFiles.PrincipalTab_5 import out_options, out_list, plot_time, TimeLimit_text, vmean_cols, umean_cols, surf_cols, u_cols, v_cols, Surfmean_cols,Hmax_cols,Hmin_cols, Hsig_cols, Hrms_cols, Havg_cols, PLOT_label, plot_time_label, VIDEO_label,Xmax_vid,Xmax_plt,Xmin_vid,Xmin_plt,Ymax_vid,Ymax_plt,Ymin_vid,Ymin_plt
+from pyFiles.PrincipalTab_5 import out_options, out_list, plot_time,TimeBegin_text, TimeLimit_text, vmean_cols, umean_cols, surf_cols, u_cols, v_cols, Surfmean_cols,Hmax_cols,Hmin_cols, Hsig_cols, Hrms_cols, Havg_cols, PLOT_label, plot_time_label, VIDEO_label,Xmax_vid,Xmax_plt,Xmin_vid,Xmin_plt,Ymax_vid,Ymax_plt,Ymin_vid,Ymin_plt
 
 
 # The next Functions called toggle_output_"variable" adds/removes the output variable to output list
@@ -325,9 +325,9 @@ def toggle_choose_output(change):
     elif change['new'] == 'Minimum surface elevation (Hmin)':
         #show
         Hmin_cols.layout.display=''
-        PLOT_label.value ='Press Button to Generate Hmin Image at a Specific Time:'
+        PLOT_label.value ='<b>Generate Hmin Image:</b>'
         plot_time_label.value = "Plot Hmin at time:"
-        VIDEO_label.value = 'Press Button to Generate Hmin Video:'
+        VIDEO_label.value = '<b>Generate Hmin Video:</b>'
         
         #hide
         Hmax_cols.layout.display='none'
@@ -343,20 +343,27 @@ def toggle_choose_output(change):
         
         # link total time & plot interval to image & video output time
         plot_time.min = 0
-        TimeLimit_text.min = 0
         plot_time.step = plotInt_text.value
-        TimeLimit_text.step = plotInt_text.value
         plot_time.value = 0
-        TimeLimit_text.value = plotInt_text.value
         plot_time.max = time_text.value
+        
+        TimeBegin_text.min = 0
+        TimeBegin_text.value = 0
+        TimeBegin_text.step = plotInt_text.value
+        TimeBegin_text.max = time_text.value - plotInt_text.value
+        
+        TimeLimit_text.value = time_text.value
+        TimeLimit_text.step = plotInt_text.value
         TimeLimit_text.max = time_text.value
         
         # link X axis limits to THL (plot column)
+        Xmin_plt.max = THL.value-5 # -5 so that it wont interfere with the max axis
         Xmax_plt.max = THL.value
         Xmin_plt.value = 0
         Xmax_plt.value = THL.value
         
         # link X axis limits to THL (video column)
+        Xmin_vid.max = THL.value-5
         Xmax_vid.max = THL.value
         Xmin_vid.value = 0
         Xmax_vid.value = THL.value
@@ -383,9 +390,9 @@ def toggle_choose_output(change):
     elif change['new'] == 'Maximum surface elevation (Hmax)':
         #show
         Hmax_cols.layout.display=''
-        PLOT_label.value ='Press Button to Generate Hmax Image at a Specific Time:'
+        PLOT_label.value ='<b>Generate Hmax Image:</b>'
         plot_time_label.value = "Plot Hmax at time:"
-        VIDEO_label.value = 'Press Button to Generate Hmax Video:'
+        VIDEO_label.value = '<b>Generate Hmax Video:</b>'
         
         #hide
         Hmin_cols.layout.display='none'
@@ -401,20 +408,27 @@ def toggle_choose_output(change):
         
         # link total time & plot interval to image & video output time
         plot_time.min = 0
-        TimeLimit_text.min = 0
         plot_time.step = plotInt_text.value
-        TimeLimit_text.step = plotInt_text.value
         plot_time.value = 0
-        TimeLimit_text.value = plotInt_text.value
         plot_time.max = time_text.value
+        
+        TimeBegin_text.min = 0
+        TimeBegin_text.value = 0
+        TimeBegin_text.step = plotInt_text.value
+        TimeBegin_text.max = time_text.value - plotInt_text.value
+        
+        TimeLimit_text.value = time_text.value
+        TimeLimit_text.step = plotInt_text.value
         TimeLimit_text.max = time_text.value
         
         # link X axis limits to THL (plot column)
+        Xmin_plt.max = THL.value-5 # -5 so that it wont interfere with the max axis
         Xmax_plt.max = THL.value
         Xmin_plt.value = 0
         Xmax_plt.value = THL.value
         
         # link X axis limits to THL (video column)
+        Xmin_vid.max = THL.value-5
         Xmax_vid.max = THL.value
         Xmin_vid.value = 0
         Xmax_vid.value = THL.value
@@ -441,7 +455,8 @@ def toggle_choose_output(change):
     elif change['new'] == 'Surface Elevation Mean':
         #show
         Surfmean_cols.layout.display=''
-        PLOT_label.value ='Press Button to Generate Surface Mean Image:'
+        PLOT_label.value ='<b>Generate Surface Mean Image:</b>'
+        VIDEO_label.value = '<b>Generate Surface Mean Video:</b>'
         
         #hide
         vmean_cols.layout.display='none'
@@ -461,17 +476,23 @@ def toggle_choose_output(change):
         plot_time.max = time_text.value     # eta mean plot max = total time
         plot_time.min = steady_time.value + T_INTV_MEAN.value     # first eta mean plot @ steady + t_intv
         
-        TimeLimit_text.value = steady_time.value + T_INTV_MEAN.value # the same is applied to video limits
-        TimeLimit_text.step = T_INTV_MEAN.value   
-        TimeLimit_text.max = time_text.value     
-        TimeLimit_text.min = steady_time.value + T_INTV_MEAN.value*2  
+        TimeBegin_text.max = time_text.value 
+        TimeBegin_text.min = steady_time.value + T_INTV_MEAN.value 
+        TimeBegin_text.step = T_INTV_MEAN.value   
+               
+        TimeLimit_text.max = time_text.value
+        TimeLimit_text.value = time_text.value
+        TimeLimit_text.step = T_INTV_MEAN.value        
+        
         
         # link X axis limits to THL (plot column)
+        Xmin_plt.max = THL.value-5 # -5 so that it wont interfere with the max axis
         Xmax_plt.max = THL.value
         Xmin_plt.value = 0
         Xmax_plt.value = THL.value
         
         # link X axis limits to THL (video column)
+        Xmin_vid.max = THL.value-5
         Xmax_vid.max = THL.value
         Xmin_vid.value = 0
         Xmax_vid.value = THL.value
@@ -498,9 +519,9 @@ def toggle_choose_output(change):
     elif change['new'] == 'Significant Wave Height (Hsig)':
         #show
         Hsig_cols.layout.display=''
-        PLOT_label.value ='Press Button to Generate Hsig Image at a Specific Time:'
+        PLOT_label.value ='<b>Generate Hsig Image:</b>'
         plot_time_label.value = "Plot Hsig at time:"
-        VIDEO_label.value = 'Press Button to Generate Hsig Video:'   
+        VIDEO_label.value = '<b>Generate Hsig Video:<b>'   
         
         #hide
         vmean_cols.layout.display='none'
@@ -513,23 +534,28 @@ def toggle_choose_output(change):
         Hmin_cols.layout.display='none'
         Hmax_cols.layout.display='none'
         
-        # change plot time limits for WaveHeight output processing
+        # change plot time limits for eta mean output processing
         plot_time.value = steady_time.value + T_INTV_MEAN.value
-        plot_time.step = T_INTV_MEAN.value   # WaveHeight plot step = t_intv
-        plot_time.max = time_text.value     # WaveHeight plot max = total time
-        plot_time.min = steady_time.value + T_INTV_MEAN.value     # first WaveHeight plot @ steady + t_intv
+        plot_time.step = T_INTV_MEAN.value   # eta mean plot step = t_intv
+        plot_time.max = time_text.value     # eta mean plot max = total time
+        plot_time.min = steady_time.value + T_INTV_MEAN.value     # first eta mean plot @ steady + t_intv
         
-        TimeLimit_text.value = steady_time.value + T_INTV_MEAN.value # the same is applied to video limits
-        TimeLimit_text.step = T_INTV_MEAN.value   
-        TimeLimit_text.max = time_text.value     
-        TimeLimit_text.min = steady_time.value + T_INTV_MEAN.value*2   
+        TimeBegin_text.max = time_text.value 
+        TimeBegin_text.min = steady_time.value + T_INTV_MEAN.value 
+        TimeBegin_text.step = T_INTV_MEAN.value   
+               
+        TimeLimit_text.max = time_text.value
+        TimeLimit_text.value = time_text.value
+        TimeLimit_text.step = T_INTV_MEAN.value     
         
         # link X axis limits to THL (plot column)
+        Xmin_plt.max = THL.value-5 # -5 so that it wont interfere with the max axis
         Xmax_plt.max = THL.value
         Xmin_plt.value = 0
         Xmax_plt.value = THL.value
         
         # link X axis limits to THL (video column)
+        Xmin_vid.max = THL.value-5
         Xmax_vid.max = THL.value
         Xmin_vid.value = 0
         Xmax_vid.value = THL.value
@@ -556,9 +582,9 @@ def toggle_choose_output(change):
     elif change['new'] == 'Root Mean Square Wave Height (Hrms)':
         #show
         Hrms_cols.layout.display=''
-        PLOT_label.value ='Press Button to Generate Hrms Image at a Specific Time:'
+        PLOT_label.value ='<b>Generate Hrms Image:</b>'
         plot_time_label.value = "Plot Hrms at time:"
-        VIDEO_label.value = 'Press Button to Generate Hrms Video:'       
+        VIDEO_label.value = '<b>Generate Hrms Video:</b>'       
         
         #hide
         vmean_cols.layout.display='none'
@@ -571,23 +597,28 @@ def toggle_choose_output(change):
         Hmin_cols.layout.display='none'
         Hmax_cols.layout.display='none'
         
-        # change plot time limits for WaveHeight output processing
+        # change plot time limits for eta mean output processing
         plot_time.value = steady_time.value + T_INTV_MEAN.value
-        plot_time.step = T_INTV_MEAN.value   # WaveHeight plot step = t_intv
-        plot_time.max = time_text.value     # WaveHeight plot max = total time
-        plot_time.min = steady_time.value + T_INTV_MEAN.value     # first WaveHeight plot @ steady + t_intv
+        plot_time.step = T_INTV_MEAN.value   # eta mean plot step = t_intv
+        plot_time.max = time_text.value     # eta mean plot max = total time
+        plot_time.min = steady_time.value + T_INTV_MEAN.value     # first eta mean plot @ steady + t_intv
         
-        TimeLimit_text.value = steady_time.value + T_INTV_MEAN.value # the same is applied to video limits
+        TimeBegin_text.max = time_text.value 
+        TimeBegin_text.min = steady_time.value + T_INTV_MEAN.value 
+        TimeBegin_text.step = T_INTV_MEAN.value   
+               
+        TimeLimit_text.max = time_text.value
+        TimeLimit_text.value = time_text.value
         TimeLimit_text.step = T_INTV_MEAN.value   
-        TimeLimit_text.max = time_text.value     
-        TimeLimit_text.min = steady_time.value + T_INTV_MEAN.value*2 
         
         # link X axis limits to THL (plot column)
+        Xmin_plt.max = THL.value-5 # -5 so that it wont interfere with the max axis
         Xmax_plt.max = THL.value
         Xmin_plt.value = 0
         Xmax_plt.value = THL.value
         
         # link X axis limits to THL (video column)
+        Xmin_vid.max = THL.value-5
         Xmax_vid.max = THL.value
         Xmin_vid.value = 0
         Xmax_vid.value = THL.value
@@ -614,9 +645,9 @@ def toggle_choose_output(change):
     elif change['new'] == 'Average Wave Height (Havg)':
         #show
         Havg_cols.layout.display=''
-        PLOT_label.value ='Press Button to Generate Havg Image at a Specific Time:'
+        PLOT_label.value ='<b>Generate Havg Image:</b>'
         plot_time_label.value = "Plot Havg at time:"
-        VIDEO_label.value = 'Press Button to Generate Havg Video:'
+        VIDEO_label.value = '<b>Generate Havg Video:</b>'
            
         #hide
         vmean_cols.layout.display='none'
@@ -629,23 +660,28 @@ def toggle_choose_output(change):
         Hmin_cols.layout.display='none'
         Hmax_cols.layout.display='none'
        
-        # change plot time limits for WaveHeight output processing
+        # change plot time limits for eta mean output processing
         plot_time.value = steady_time.value + T_INTV_MEAN.value
-        plot_time.step = T_INTV_MEAN.value   # WaveHeight plot step = t_intv
-        plot_time.max = time_text.value     # WaveHeight plot max = total time
-        plot_time.min = steady_time.value + T_INTV_MEAN.value     # first WaveHeight plot @ steady + t_intv
+        plot_time.step = T_INTV_MEAN.value   # eta mean plot step = t_intv
+        plot_time.max = time_text.value     # eta mean plot max = total time
+        plot_time.min = steady_time.value + T_INTV_MEAN.value     # first eta mean plot @ steady + t_intv
         
-        TimeLimit_text.value = steady_time.value + T_INTV_MEAN.value # the same is applied to video limits
+        TimeBegin_text.max = time_text.value 
+        TimeBegin_text.min = steady_time.value + T_INTV_MEAN.value 
+        TimeBegin_text.step = T_INTV_MEAN.value   
+               
+        TimeLimit_text.max = time_text.value
+        TimeLimit_text.value = time_text.value
         TimeLimit_text.step = T_INTV_MEAN.value   
-        TimeLimit_text.max = time_text.value     
-        TimeLimit_text.min = steady_time.value + T_INTV_MEAN.value*2 
         
         # link X axis limits to THL (plot column)
+        Xmin_plt.max = THL.value-5 # -5 so that it wont interfere with the max axis
         Xmax_plt.max = THL.value
         Xmin_plt.value = 0
         Xmax_plt.value = THL.value
         
         # link X axis limits to THL (video column)
+        Xmin_vid.max = THL.value-5
         Xmax_vid.max = THL.value
         Xmin_vid.value = 0
         Xmax_vid.value = THL.value
@@ -672,9 +708,9 @@ def toggle_choose_output(change):
     else:
         #show Surface Elevation:
         surf_cols.layout.display=''
-        PLOT_label.value ='Press Button to Generate Surface Image at a Specific Time:'
+        PLOT_label.value ='<b>Generate Surface Image:</b>'
         plot_time_label.value = "Plot Surface at time:"
-        VIDEO_label.value = 'Press Button to Generate Surface Video:'
+        VIDEO_label.value = '<b>Generate Surface Video:</b>'
         
         #hide
         vmean_cols.layout.display='none'
@@ -689,21 +725,28 @@ def toggle_choose_output(change):
         Hmax_cols.layout.display='none'
         
         # link total time & plot interval to image & video output time
-        plot_time.min = 0     
-        TimeLimit_text.min = 0
+        plot_time.min = 0
         plot_time.step = plotInt_text.value
-        TimeLimit_text.step = plotInt_text.value
         plot_time.value = 0
-        TimeLimit_text.value = plotInt_text.value
         plot_time.max = time_text.value
+        
+        TimeBegin_text.min = 0
+        TimeBegin_text.value = 0
+        TimeBegin_text.step = plotInt_text.value
+        TimeBegin_text.max = time_text.value - plotInt_text.value
+        
+        TimeLimit_text.value = time_text.value
+        TimeLimit_text.step = plotInt_text.value
         TimeLimit_text.max = time_text.value
         
         # link X axis limits to THL (plot column)
+        Xmin_plt.max = THL.value-5 # -5 so that it wont interfere with the max axis
         Xmax_plt.max = THL.value
         Xmin_plt.value = 0
         Xmax_plt.value = THL.value
         
         # link X axis limits to THL (video column)
+        Xmin_vid.max = THL.value-5
         Xmax_vid.max = THL.value
         Xmin_vid.value = 0
         Xmax_vid.value = THL.value

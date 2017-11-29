@@ -19,7 +19,7 @@ bathy_list_container = widgets.VBox([label_intro,bathy_list],layout = widgets.La
 #####################################
 
 label_intro1 = widgets.HTML("""Upload your file in the <b>Project Title</b> folder. Once the file is uploaded, identify 
-its name (e.g. MyBathy.txt) and its total horizontal length (THL). Press "Plot Bathymetry" to visualize the bathymetry and "Assemble Bathymetry File" to format the uploaded bathy file to the FUNWAVE format.<br><br>
+its name (e.g. MyBathy.txt) and its total horizontal length (THL). Press "Plot Bathymetry" to visualize the bathymetry.<br><br>
 <b>NOTE: </b>This file must be a text of 1 row; with depth values [-] for underwater and [+] for surface. <br>Also, the values must be in <b>metric</b> units.""",layout=widgets.Layout(width='90%'))
 
 
@@ -31,7 +31,9 @@ THL = widgets.BoundedFloatText(description='THL',min = '10',value='200',max='150
 file_name_box = widgets.HBox([bathy_name,upload_bathy_name,THL],
                           layout=widgets.Layout(height ='100px'))
 
-Box_upload = widgets.VBox([label_intro1,space_box,file_name_box],
+note_upload = widgets.HTML("""Make sure to press <b>"Assemble Bathymetry File"</b> before continuing to <b>Step #2</b>. This will format the uploaded bathymetry file to the <b>required FUNWAVE format.</b>""", layout=widgets.Layout(width='90%'))
+
+Box_upload = widgets.VBox([label_intro1,space_box,file_name_box,space_box,note_upload],
                           layout=widgets.Layout(height ='500px'))
 
 ######################################
@@ -125,6 +127,8 @@ bathy_option_box = widgets.VBox([Box_upload,Box_SlopeBathy,Box_FlatBathy],layout
 
 #  Plot and Save buttons widgets
 plot_button = widgets.Button(description="Plot Bathymetry", layout=widgets.Layout(width='50%',height='40px'))
+
+
 #  Plot and Save button widget
 save_button = widgets.Button(description="Assemble Bathymetry File",
                              layout=widgets.Layout(width = '50%',height = '40px'))
@@ -134,5 +138,5 @@ plotSaveHBox = widgets.HBox([plot_button, save_button],layout=widgets.Layout(wid
 
 # Bathymetry tab
 page_BATHY = widgets.VBox([bathy_list_container,bathy_option_box,plotSaveHBox],
-                          layout=widgets.Layout(height ='530px'))
+                          layout=widgets.Layout(height ='550px'))
 

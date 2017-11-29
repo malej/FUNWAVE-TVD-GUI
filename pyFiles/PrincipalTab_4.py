@@ -35,11 +35,11 @@ fun_cont = widgets.HBox(children = [exec_list_container,RunFunwave_button_cont],
                         layout = widgets.Layout(height = '150px'))
 
 # run funwave load progress bar 
-Prog_label = widgets.Label('Model Progress:',layout = widgets.Layout(width = '12%'))
+Prog_label = widgets.HTML('Model Progress:',layout = widgets.Layout(width = '10%'))
 RunFunwave_load = widgets.FloatProgress(value=0.0,min=5.0,max=10.0,step=0.1,
-                                        layout = widgets.Layout(width = '83%',height = '35px'))
+                                        layout = widgets.Layout(width = '90%',height = '35px'))
 Load_cont = widgets.HBox([Prog_label,RunFunwave_load],layout = widgets.Layout(width = '90%',height = '137px'))
 
 # create run_funwave tab
 RUNfunwave_tabs = widgets.VBox(children=[space_box,fun_cont,Load_cont],
-                              layout=widgets.Layout(height ='530px'))
+                              layout=widgets.Layout(height ='550px'))
