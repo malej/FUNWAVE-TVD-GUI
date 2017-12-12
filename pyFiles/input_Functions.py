@@ -180,7 +180,7 @@ def wave_param_generate_input(wave_maker_parameters):
         parameter = """Xc = %4.2f
 Yc = %4.2f
 AMP = %4.2f
-!WID = %4.2f""" % (xc.value,yc.value,amp.value,wid.value)
+WID = %4.2f""" % (xc.value,yc.value,amp.value,wid.value)
         wave_maker_parameters.value = parameter
         
     elif wave_maker.value == 'JON_1D':
@@ -193,10 +193,11 @@ FreqPeak = %4.2f
 FreqMin = %4.2f
 FreqMax = %4.2f
 Hmo = %4.2f
+Delta_WK = %4.2f
 GammaTMA = %4.2f
 Nfreq = %d
         """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,TimeRamp.value,
-               FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,GammaTMA.value,int(NFreq.value))
+               FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,deltaWK.value,GammaTMA.value,int(NFreq.value))
         wave_maker_parameters.value = parameter
     
     elif wave_maker.value == 'JON_2D':
@@ -204,17 +205,17 @@ Nfreq = %d
 Yc_WK = %4.2f
 DEP_WK = %4.2f
 Time_ramp = %4.2f
-!Delta_WK = %4.2f
 FreqPeak = %4.2f
 FreqMin = %4.2f
 FreqMax = %4.2f
 Hmo = %4.2f
+Delta_WK = %4.2f
 GammaTMA = %4.2f
 Nfreq = %d
 Ntheta = %d
 ThetaPeak = %4.2f
         """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,TimeRamp.value,
-               FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,GammaTMA.value,int(NFreq.value),int(NTheta.value),
+               FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,deltaWK.value, GammaTMA.value,int(NFreq.value),int(NTheta.value),
                ThetaPeak.value)
         wave_maker_parameters.value = parameter
         
@@ -223,7 +224,7 @@ ThetaPeak = %4.2f
         parameter = """AMP = %4.2f
 Xc = %4.2f
 Yc = %4.2f
-!WID = %4.2f
+WID = %4.2f
         """ % (amp.value,xc.value,yc.value,wid.value)
         wave_maker_parameters.value = parameter
         
@@ -245,7 +246,8 @@ AMP_WK = %4.2f
 Tperiod = %4.2f
 Time_ramp = %4.2f
 Theta_WK = %4.2f
-        """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,ampWK.value,tPeriod.value,TimeRamp.value,thetaWK.value)
+Delta_WK = %4.2f
+        """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,ampWK.value,tPeriod.value,TimeRamp.value,thetaWK.value, deltaWK.value)
         wave_maker_parameters.value = parameter        
     
     elif wave_maker.value == 'TMA_1D/IRR_WAVE':
@@ -253,13 +255,14 @@ Theta_WK = %4.2f
 Yc_WK = %4.2f
 DEP_WK = %4.2f
 Time_ramp = %4.2f
+Delta_WK = %4.2f
 FreqPeak = %4.2f
 FreqMin = %4.2f
 FreqMax = %4.2f
 Hmo = %4.2f
 GammaTMA = %4.2f
 Nfreq = %d
-        """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,TimeRamp.value,
+        """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,TimeRamp.value,deltaWK.value,
                FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,GammaTMA.value,int(NFreq.value))
         wave_maker_parameters.value = parameter
            
@@ -289,7 +292,7 @@ def generate_input_file(turn_on_IC,dif_text,fric_text,dir_text,depth_out,
         dx = float(val[5])
         
         # Step 2 - create output folder and input file
-        output_text=os.path.join(pwd,folder_name,'output','') # create output path 
+        output_text=os.path.join('output','') # create output path 
         input_path = os.path.join(pwd,folder_name,'input.txt') # create path to save input.txt in project folder
         
         wave_maker_param = widgets.HTML(layout = widgets.Layout(width = "20%"))
@@ -482,9 +485,9 @@ def wave_param_show_input(variable):
     elif wave_maker.value == 'JON_1D':
         
         parameter = """Xc_WK = %4.2f</br>Yc_WK = %4.2f</br>DEP_WK = %4.2f</br>
-        Time_ramp = %4.2f</br>FreqPeak = %4.2f</br>FreqMin = %4.2f</br>
+        Time_ramp = %4.2f</br>Delta_WK = %4.2f</br>FreqPeak = %4.2f</br>FreqMin = %4.2f</br>
         FreqMax = %4.2f</br>Hmo = %4.2f</br>GammaTMA = %4.2f</br>Nfreq = %4.2d</br>
-        """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,TimeRamp.value,
+        """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,TimeRamp.value,deltaWK.value,
                FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,GammaTMA.value,int(NFreq.value))
         wave_maker_parameters.value = parameter
     
@@ -493,7 +496,7 @@ def wave_param_show_input(variable):
         Time_ramp = %4.2f</br>Delta_WK = %4.2f</br>FreqPeak = %4.2f</br>FreqMin = %4.2f</br>
         FreqMax = %4.2f</br>Hmo = %4.2f</br>GammaTMA = %4.2f</br>Nfreq = %4.2d</br> Ntheta = %4.2d</br>
         ThetaPeak = %4.2f</br>
-        """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,TimeRamp.value,
+        """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,TimeRamp.value,deltaWK.value,
                FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,GammaTMA.value,int(NFreq.value),int(NTheta.value),
                ThetaPeak.value)
         wave_maker_parameters.value = parameter
@@ -513,15 +516,15 @@ def wave_param_show_input(variable):
     elif wave_maker.value == 'WK_REG':
         
         parameter = """Xc_WK = %4.2f</br>Yc_WK = %4.2f</br>DEP_WK = %4.2f</br>AMP_WK = %4.2f</br>Tperiod = %4.2f</br>
-        Time_ramp = %4.2f</br>Theta_WK = %4.2f</br>
-        """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,ampWK.value,tPeriod.value,TimeRamp.value,thetaWK.value)
+        Time_ramp = %4.2f</br>Theta_WK = %4.2f</br>Delta_WK = %4.2f</br>
+        """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,ampWK.value,tPeriod.value,TimeRamp.value,thetaWK.value,deltaWK.value)
         wave_maker_parameters.value = parameter        
     
     elif wave_maker.value == 'TMA_1D/IRR_WAVE':
         parameter = """Xc_WK = %4.2f</br>Yc_WK = %4.2f</br>DEP_WK = %4.2f</br>
         Time_ramp = %4.2f</br>Delta_WK = %4.2f</br>FreqPeak = %4.2f</br>FreqMin = %4.2f</br>
         FreqMax = %4.2f</br>Hmo = %4.2f</br>GammaTMA = %4.2f</br>Nfreq = %4.2d</br>
-        """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,TimeRamp.value,
+        """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,TimeRamp.value,deltaWK.value,
                FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,GammaTMA.value,int(NFreq.value))
         wave_maker_parameters.value = parameter
            
@@ -539,7 +542,7 @@ def update_input_function(variable):
     s = s.replace(" ", "_")
     folder_name = s.replace(".", "_") # substitute ' ' space and '.' in project title with '_'
     
-    output_text=os.path.join(pwd,folder_name,'output','') # create output path 
+    output_text=os.path.join('output','') # create output path 
     
 ### this function lets the user update the input.txt before generating the file
 

@@ -43,7 +43,7 @@ def project_clicked(variable):
             
 ## generate bathy widgets function
 # this function works with the generate bathy widgets on PrincipalTab_1
-from pyFiles.PrincipalTab_1 import Box_upload,Box_SlopeBathy,Box_FlatBathy,MWL,space_box2
+from pyFiles.PrincipalTab_1 import Box_upload,Box_SlopeBathy,Box_FlatBathy,MWL,space_box
 def toggle_choose_bathy(change):
     if change['new'] == 'Upload File':
         #show
@@ -65,7 +65,7 @@ def toggle_choose_bathy(change):
         Box_FlatBathy.layout.display=''
         MWL.description='Depth'
         MWL.layout.width = '50%'
-        space_box2.layout.height = '15px'
+        space_box.layout.height = '15px'
         #hide
         Box_upload.layout.display='none' 
         Box_SlopeBathy.layout.display='none'
