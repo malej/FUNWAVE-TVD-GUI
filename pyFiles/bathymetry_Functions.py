@@ -40,7 +40,8 @@ def update_bathy(variable):
     data_text = os.path.join(pwd,folder_name,'data.txt') # create path to save data.txt in project folder
     DataFile = open(data_text,'w')         # save text file with points and dx for future use in input .txt
     dataText = """points = %d
-    dx = %f"""%(N,dx)
+    dx = %f
+    DO NOT DELETE ME!!!!"""%(N,dx)
     DataFile.write(dataText)
     DataFile.close()
  
@@ -132,7 +133,8 @@ def compute_flat(variable):
     data_text = os.path.join(pwd,folder_name,'data.txt') # create path to save data.txt in project folder
     DataFile = open(data_text,'w')         # save text file with points and dx for future use in input .txt
     dataText = """points = %d
-    dx = %f"""%(points,dx)
+    dx = %f
+    DO NOT DELETE ME!!!!"""%(points,dx)
     DataFile.write(dataText)
     DataFile.close()
     
@@ -173,7 +175,8 @@ def compute_high_difference(variable):
     data_text = os.path.join(pwd,folder_name,'data.txt') # create path to save data.txt in project folder
     DataFile = open(data_text,'w')         # save text file with points and dx for future use
     dataText = """points = %d
-    dx = %f"""%(points,dx)
+    dx = %f
+    DO NOT DELETE ME!!!!"""%(points,dx)
     DataFile.write(dataText)
     DataFile.close()
     
