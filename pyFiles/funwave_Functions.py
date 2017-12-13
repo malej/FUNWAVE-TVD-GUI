@@ -63,6 +63,27 @@ def runFUN_function(variable):
     
     if check_dir_dep == True and check_dir_input == True:         # if depth and input files exist...
         
+        if exec_list.value == "FUNWAVE CCE": # to run on CCE
+            EXEC = 'funwave'
+            FUN = 'FUNWAVE-TVD'
+            BIN = 'bin'
+            HOME = '/funwave'
+            fun_dir = os.path.join(HOME,FUN,BIN,EXEC)
+            inputDir = os.path.join(folder_dir,'input.txt')
+
+            os.chdir(folder_dir)
+
+            run_fun = "cd %s && /usr/local/mpich/bin/mpirun -n %d %s %s > LOG.txt &"%(folder_dir,processors_text.value,
+                                                                 fun_dir,
+                                                                 inputDir)
+ 
+            os.system(run_fun) # run funwave
+            return_to_GUI_folder = os.path.join(folder_dir, '..')
+            os.chdir(return_to_GUI_folder)
+
+            runFunLoad(folder_dir)
+
+
         if exec_list.value == "FUNWAVE HPC Topaz": # to run in hpc
              
             EXEC = 'funwave_sgi'
