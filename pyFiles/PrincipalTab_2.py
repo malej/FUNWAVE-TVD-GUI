@@ -440,10 +440,9 @@ inputUpdate_box = widgets.HBox([inputFile_label,update_input_button],
 # print input.txt for verification 
 input_verification = widgets.HTML() 
 
-input_note = widgets.HTML("""<b>NOTE:</b> CCE users can verify their input.txt by open it in your Project's folder located in 
-the Jupyter Notebook directory.""")
+input_note = widgets.HTML("""<font color="red"><b>NOTE:</b> CCE users can verify their input.txt by opening it in your Project's folder located at the Jupyter Notebook directory.</font>""")
 
-inputFile_box = widgets.Box([input_verification],layout = widgets.Layout(height = '295px',width = '90%',
+inputFile_box = widgets.Box([input_verification],layout = widgets.Layout(height = '285px',width = '90%',
                                                                         border='solid 2px grey'))
 # generate input file button
 inputFile_label2 = widgets.HTML("""If you are satisfied with your input values, press the Generate Input File button.""",
@@ -454,5 +453,5 @@ inputFile_button = widgets.Button(description = 'Generate Input File',layout = w
 inputGen_box = widgets.HBox([inputFile_label2,inputFile_button],
                                layout = widgets.Layout(width = "90%",height = '55px'))
 
-page_GenInput = widgets.VBox([inputUpdate_box,space_box1,inputFile_box,space_box1,inputGen_box],
+page_GenInput = widgets.VBox([inputUpdate_box,space_box1,inputFile_box,input_note,space_box1,inputGen_box],
                                  layout = page_inputIntro.layout)
