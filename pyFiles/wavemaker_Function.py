@@ -10,8 +10,11 @@ import numpy as np
 ## Show GUI function
 # this function shows the entire GUI once the "generate project" button is pressed
 # this function works with the generate bathy widgets on PRINCIPAL_TAB
-from pyFiles.PRINCIPAL_TAB import GUI_CONT, title_text
+# import pertinent variables from principal tab
+from pyFiles.PRINCIPAL_TAB import GUI_CONT, title_text,space_box2,container_title
 def project_clicked(variable):
+    clear_output(wait=True)
+    display(space_box2,container_title)
     
     pwd = os.getcwd()  # get current path
     s = title_text.value # project title given by the user (widget located in PRINCIPAL_TAB)

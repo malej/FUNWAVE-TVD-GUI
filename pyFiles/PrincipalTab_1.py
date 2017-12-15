@@ -6,6 +6,7 @@ from traitlets import link
 ##########################################################
 
 space_box = widgets.Box(layout=widgets.Layout(height ='25px')) # box created to have space among widgets
+space_box2 = widgets.Box(layout=widgets.Layout(width = "5%",height ='60px')) # box created to have space among widgets
 
 # bathymetry dropdown widget
 label_intro = widgets.HTML("""Specify the type of One-Dimensional Bathymetry:""",
@@ -18,9 +19,16 @@ bathy_list_container = widgets.VBox([label_intro,bathy_list],layout = widgets.La
 ### Option #1a: Upload Bathy File ###
 #####################################
 
-label_intro1 = widgets.HTML("""Upload your file in the <b>Project Title</b> folder. Once the file is uploaded, identify 
-its name (e.g. MyBathy.txt) and its total horizontal length (THL). Press "Plot Bathymetry" to visualize the bathymetry.<br><br>
-<b>NOTE: </b>This file must be a text of 1 row; with depth values [-] for underwater and [+] for surface. <br>Also, the values must be in <b>metric</b> units.""",layout=widgets.Layout(width='90%'))
+label_intro1 = widgets.HTML("""<ul> 
+<li><b>Substep 1:</b> Upload your file in the <b>Project Title</b> folder through  the <b>Jupyter Notebook home directory</b>. Go inside your Projet's folder and upload the file by pressing the "Upload" button located at the top right corner of the directory.<br></li>
+
+<b>NOTE: </b>This file must be a text of 1 row; with depth values [-] for underwater and [+] for surface. Also, the values must be in <b>metric</b> units.<br><br>
+
+<li><b>Substep 2:</b> Once the file is uploaded, identify its name (e.g. MyBathy.txt) and its total horizontal length (THL) in the widgets below. Press "Plot Bathymetry" to visualize the bathymetry.<br><br></li>
+
+<li><b>Substep 3:</b> If you are satisfied with the bathymetry, <b>you must press "Assemble Bathymetry File"</b> before continuing to <b>Step #2</b>. This will format the uploaded bathymetry file to the <b>required FUNWAVE format.</b><br><br></li>
+</ul>
+""",layout=widgets.Layout(width='90%'))
 
 
 bathy_name = widgets.HTML("File name:",layout=widgets.Layout(width = "10%"))
@@ -28,12 +36,10 @@ upload_bathy_name = widgets.Text(layout=widgets.Layout(width = "25%")) # name of
 
 THL = widgets.BoundedFloatText(description='THL',min = '10',value='200',max='1500',step='0.01',
                                layout=widgets.Layout(width = "25%"))    # total horizontal length
-file_name_box = widgets.HBox([bathy_name,upload_bathy_name,THL],
-                          layout=widgets.Layout(height ='100px'))
+file_name_box = widgets.HBox([space_box2,bathy_name,upload_bathy_name,THL],
+                          layout=widgets.Layout(height ='75px'))
 
-note_upload = widgets.HTML("""Make sure to press <b>"Assemble Bathymetry File"</b> before continuing to <b>Step #2</b>. This will format the uploaded bathymetry file to the <b>required FUNWAVE format.</b>""", layout=widgets.Layout(width='90%'))
-
-Box_upload = widgets.VBox([label_intro1,space_box,file_name_box,space_box,note_upload],
+Box_upload = widgets.VBox([label_intro1,space_box2,file_name_box],
                           layout=widgets.Layout(height ='500px'))
 
 ######################################

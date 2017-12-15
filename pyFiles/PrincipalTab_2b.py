@@ -14,27 +14,35 @@ import numpy as np
 ################################
 
 space_box1 = widgets.Box(layout=widgets.Layout(height ='25px', width='90%')) # box created to have space among widgets 
-space_box2 = widgets.Box(layout=widgets.Layout(width='10%')) # box created to have space among widgets
 
 # label with input.txt intro
 label_input_INTRO = widgets.HTML("""This Notebook creates <b>FUNWAVE's
-input.txt</b> according to the user's specifications.<br> It consists of the following six steps:<br><br>
-<ol>
-<li><b>Project Intro:</b> In this tab the user submits the <b>Number of Processors</b>, the simulation's <b>Total Time</b>, and the <b>Plot Interval.</b><br></li>
+input.txt</b> according to the user's specifications.<br> It consists of the following six steps:""",
+layout = widgets.Layout(height = '50px', width = '90%'))
 
-<li><b>Initial Conditions:</b> In this tab the user determines if the project has 
-initial conditions and specifies their file names.<br>
-<b>NOTE:</b> These files must be uploaded in the Project's folder.<br></li>
+space_box2 = widgets.Box(layout=widgets.Layout(width='10%')) # box created to have space among widgets
 
-<li><b>Wave Maker:</b> The user chooses the wave maker and inputs its respective 
-parameters.<br></li>
+input_step1 = widgets.HTML("""<b>1- Project Intro:</b> In this tab the user submits the  
+<b>Number of Processors</b>, the simulation's <b>Total Time</b>, and the <b>Plot Interval.</b>""")
 
-<li><b>Sponge Layer:</b> The user selects the sponge layers and inputs their respective values.<br></li>
+input_step2 = widgets.HTML("""<b>2- Initial Conditions:</b> In this tab the user determines if the project has 
+initial conditions and specifies their file names. These files must be uploaded in the project title folder.""")
 
-<li><b>Output Options:</b> The user picks all the desired output variables from the simulation.<br></li>
+input_step3 = widgets.HTML("""<b>3- Wave Maker:</b> The user chooses the wave maker and inputs its respective 
+parameters.""")
 
-<li><b>Generate Input:</b> The user verifies and generates the project's driver <b>input.txt</b> file.</li>
-</ol>""")
+input_step4 = widgets.HTML("""<b>4- Sponge Layer:</b> The user selects the sponge layers and inputs their respective 
+values.""")
+
+input_step5 = widgets.HTML("""<b>5- Output Options:</b> The user picks all the desired output variables from the simulation.""")
+
+input_step6 = widgets.HTML("""<b>6- Generate Input:</b> The user verifies and generates the project's driver <b>input.txt
+</b> file.""")
+
+step_box = widgets.VBox([input_step1,input_step2,input_step3,input_step4,input_step5,input_step6],
+                        layout = widgets.Layout(width = '80%'))
+
+space_step_box = widgets.HBox([space_box2,step_box]) # box containing the steps of Input tab
 
 
 # Number of processors widget container (label & textbox)
@@ -59,7 +67,7 @@ container_proc_time = widgets.HBox([space_box2,container_processors,container_ti
                                   layout = widgets.Layout(height = '75px'))
 
 # tab 2a container box
-page_inputIntro = widgets.VBox(children=[label_input_INTRO,space_box1,space_box1,
+page_inputIntro = widgets.VBox(children=[label_input_INTRO,space_step_box,space_box1,space_box1,
                               container_proc_time],layout = widgets.Layout(width = "90%",height = '487px',
                                                               align_items = 'stretch' ))
 
@@ -440,9 +448,10 @@ inputUpdate_box = widgets.HBox([inputFile_label,update_input_button],
 # print input.txt for verification 
 input_verification = widgets.HTML() 
 
-input_note = widgets.HTML("""<font color="red"><b>NOTE:</b> CCE users can verify their input.txt by opening it in your Project's folder located at the Jupyter Notebook directory.</font>""")
+input_note = widgets.HTML("""<b>NOTE:</b> CCE users can verify their input.txt by open it in your Project's folder located in 
+the Jupyter Notebook directory.""")
 
-inputFile_box = widgets.Box([input_verification],layout = widgets.Layout(height = '285px',width = '90%',
+inputFile_box = widgets.Box([input_verification],layout = widgets.Layout(height = '295px',width = '90%',
                                                                         border='solid 2px grey'))
 # generate input file button
 inputFile_label2 = widgets.HTML("""If you are satisfied with your input values, press the Generate Input File button.""",
@@ -453,5 +462,5 @@ inputFile_button = widgets.Button(description = 'Generate Input File',layout = w
 inputGen_box = widgets.HBox([inputFile_label2,inputFile_button],
                                layout = widgets.Layout(width = "90%",height = '55px'))
 
-page_GenInput = widgets.VBox([inputUpdate_box,space_box1,inputFile_box,input_note,space_box1,inputGen_box],
+page_GenInput = widgets.VBox([inputUpdate_box,space_box1,inputFile_box,space_box1,inputGen_box],
                                  layout = page_inputIntro.layout)
