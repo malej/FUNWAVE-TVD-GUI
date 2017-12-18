@@ -172,7 +172,8 @@ def toggle_waveMaker(change):
         container_TMA_1D.layout.display='none'
         
         # reset xcoordinate of wavemaker 
-        xc.value = 0 
+        # there is a 5m separation from the boundary becasue these are internal wavemakers, hence they cant be at the boundary
+        xc.value = 5 
         xc.max = THL.value - 5
         
     elif change['new'] == 'INI_GAUS':
@@ -188,7 +189,8 @@ def toggle_waveMaker(change):
         container_TMA_1D.layout.display='none'
         
         # reset xcoordinate of wavemaker 
-        xc.value = 0 
+        # there is a 5m separation from the boundary becasue these are internal wavemakers, hence they cant be at the boundary
+        xc.value = 5 
         xc.max = THL.value - 5
         
         
@@ -205,9 +207,34 @@ def toggle_waveMaker(change):
         container_TMA_1D.layout.display='none'
         
         # reset xcoordinate and wavemaker depth values
-        dep.value = '0'
-        Xwavemaker.value = 0
+        # there is a 5m separation from the boundary becasue these are internal wavemakers, hence they cant be at the boundary
+        Xwavemaker.value = 5  
         Xwavemaker.max = THL.value - 5
+        
+        # search initial depth value at xcoordinate
+        pwd = os.getcwd()  # get current path
+        s = title_text.value # project title given by the user (widget located in PRINCIPAL_TAB)
+        s = s.replace(" ", "_")
+        folder_name = s.replace(".", "_") # substitute ' ' space and '.' in project title with '_'
+
+        Depthtext = os.path.join(pwd,folder_name,'depth.txt') # path to depth.txt 
+        check_dir_dep = os.path.exists(Depthtext) # check if depth.txt exist
+
+        if check_dir_dep == True:         # if file exist...
+            depth = np.loadtxt(Depthtext)[0]  # import depth.txt to be used in change_dep and change_dep_wk functions 
+            data_text = os.path.join(pwd,folder_name,'data.txt') # create path to open data.txt in project folder
+
+            fin= open(data_text,'r')  
+            val = fin.read()            
+            val=val.split()
+            points = val[2]
+            dx = float(val[5])
+
+            index = int(Xwavemaker.value/dx) # index = Xcoordinate/dx
+            dep.value = '%4.2f' % (depth[index]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
+
+        else:
+            pass
         
     elif change['new'] == 'WK_REG':
         #show
@@ -222,9 +249,35 @@ def toggle_waveMaker(change):
         container_TMA_1D.layout.display='none'
     
         # reset xcoordinate and wavemaker depth values
-        xc_wk.value = 0 
+        # there is a 5m separation from the boundary becasue these are internal wavemakers, hence they cant be at the boundary
+        xc_wk.value = 5 
         xc_wk.max = THL.value - 5
-        depWK.value = '0'
+        
+        # search initial depth value at xcoordinate
+        pwd = os.getcwd()  # get current path
+        s = title_text.value # project title given by the user (widget located in PRINCIPAL_TAB)
+        s = s.replace(" ", "_")
+        folder_name = s.replace(".", "_") # substitute ' ' space and '.' in project title with '_'
+
+        Depthtext = os.path.join(pwd,folder_name,'depth.txt') # path to depth.txt 
+        check_dir_dep = os.path.exists(Depthtext) # check if depth.txt exist
+
+        if check_dir_dep == True:         # if file exist...
+            depth = np.loadtxt(Depthtext)[0]  # import depth.txt to be used in change_dep and change_dep_wk functions 
+            data_text = os.path.join(pwd,folder_name,'data.txt') # create path to open data.txt in project folder
+
+            fin= open(data_text,'r')  
+            val = fin.read()            
+            val=val.split()
+            points = val[2]
+            dx = float(val[5])
+
+            index = int(xc_wk.value/dx) # index = Xcoordinate/dx
+            depWK.value = '%4.2f' % (depth[index]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
+
+        else:
+            pass
+        
         
     elif change['new'] == 'JON_1D':
         #show
@@ -244,9 +297,34 @@ def toggle_waveMaker(change):
         GammaTMA.value = 3.3
         
         # reset xcoordinate and wavemaker depth values
-        xc_wk.value = 0 
+        # there is a 5m separation from the boundary becasue these are internal wavemakers, hence they cant be at the boundary
+        xc_wk.value = 5 
         xc_wk.max = THL.value - 5
-        depWK.value = '0'
+        
+        # search initial depth value at xcoordinate
+        pwd = os.getcwd()  # get current path
+        s = title_text.value # project title given by the user (widget located in PRINCIPAL_TAB)
+        s = s.replace(" ", "_")
+        folder_name = s.replace(".", "_") # substitute ' ' space and '.' in project title with '_'
+
+        Depthtext = os.path.join(pwd,folder_name,'depth.txt') # path to depth.txt 
+        check_dir_dep = os.path.exists(Depthtext) # check if depth.txt exist
+
+        if check_dir_dep == True:         # if file exist...
+            depth = np.loadtxt(Depthtext)[0]  # import depth.txt to be used in change_dep and change_dep_wk functions 
+            data_text = os.path.join(pwd,folder_name,'data.txt') # create path to open data.txt in project folder
+
+            fin= open(data_text,'r')  
+            val = fin.read()            
+            val=val.split()
+            points = val[2]
+            dx = float(val[5])
+
+            index = int(xc_wk.value/dx) # index = Xcoordinate/dx
+            depWK.value = '%4.2f' % (depth[index]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
+
+        else:
+            pass
     
     elif change['new'] == 'JON_2D':
         #show
@@ -266,9 +344,34 @@ def toggle_waveMaker(change):
         GammaTMA.value = 3.3
         
         # reset xcoordinate and wavemaker depth values
-        xc_wk.value = 0 
+        # there is a 5m separation from the boundary becasue these are internal wavemakers, hence they cant be at the boundary
+        xc_wk.value = 5 
         xc_wk.max = THL.value - 5 
-        depWK.value = '0'
+        
+        # search initial depth value at xcoordinate
+        pwd = os.getcwd()  # get current path
+        s = title_text.value # project title given by the user (widget located in PRINCIPAL_TAB)
+        s = s.replace(" ", "_")
+        folder_name = s.replace(".", "_") # substitute ' ' space and '.' in project title with '_'
+
+        Depthtext = os.path.join(pwd,folder_name,'depth.txt') # path to depth.txt 
+        check_dir_dep = os.path.exists(Depthtext) # check if depth.txt exist
+
+        if check_dir_dep == True:         # if file exist...
+            depth = np.loadtxt(Depthtext)[0]  # import depth.txt to be used in change_dep and change_dep_wk functions 
+            data_text = os.path.join(pwd,folder_name,'data.txt') # create path to open data.txt in project folder
+
+            fin= open(data_text,'r')  
+            val = fin.read()            
+            val=val.split()
+            points = val[2]
+            dx = float(val[5])
+
+            index = int(xc_wk.value/dx) # index = Xcoordinate/dx
+            depWK.value = '%4.2f' % (depth[index]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
+
+        else:
+            pass
     
     elif change['new'] == 'WK_IRR':
         #show
@@ -288,9 +391,34 @@ def toggle_waveMaker(change):
         GammaTMA.min = 5.0
         
         # reset xcoordinate and wavemaker depth values
-        xc_wk.value = 0 
+        # there is a 5m separation from the boundary becasue these are internal wavemakers, hence they cant be at the boundary
+        xc_wk.value = 5 
         xc_wk.max = THL.value - 5
-        depWK.value = '0'
+        
+        # search initial depth value at xcoordinate
+        pwd = os.getcwd()  # get current path
+        s = title_text.value # project title given by the user (widget located in PRINCIPAL_TAB)
+        s = s.replace(" ", "_")
+        folder_name = s.replace(".", "_") # substitute ' ' space and '.' in project title with '_'
+
+        Depthtext = os.path.join(pwd,folder_name,'depth.txt') # path to depth.txt 
+        check_dir_dep = os.path.exists(Depthtext) # check if depth.txt exist
+
+        if check_dir_dep == True:         # if file exist...
+            depth = np.loadtxt(Depthtext)[0]  # import depth.txt to be used in change_dep and change_dep_wk functions 
+            data_text = os.path.join(pwd,folder_name,'data.txt') # create path to open data.txt in project folder
+
+            fin= open(data_text,'r')  
+            val = fin.read()            
+            val=val.split()
+            points = val[2]
+            dx = float(val[5])
+
+            index = int(xc_wk.value/dx) # index = Xcoordinate/dx
+            depWK.value = '%4.2f' % (depth[index]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
+
+        else:
+            pass
         
     elif change['new'] == 'TMA_1D/IRR_WAVE':
         #show
@@ -310,9 +438,34 @@ def toggle_waveMaker(change):
         GammaTMA.min = 5.0
         
         # reset xcoordinate and wavemaker depth values
-        xc_wk.value = 0 
+        # there is a 5m separation from the boundary becasue these are internal wavemakers, hence they cant be at the boundary
+        xc_wk.value = 5 
         xc_wk.max = THL.value - 5
-        depWK.value = '0'
+        
+        # search initial depth value at xcoordinate
+        pwd = os.getcwd()  # get current path
+        s = title_text.value # project title given by the user (widget located in PRINCIPAL_TAB)
+        s = s.replace(" ", "_")
+        folder_name = s.replace(".", "_") # substitute ' ' space and '.' in project title with '_'
+
+        Depthtext = os.path.join(pwd,folder_name,'depth.txt') # path to depth.txt 
+        check_dir_dep = os.path.exists(Depthtext) # check if depth.txt exist
+
+        if check_dir_dep == True:         # if file exist...
+            depth = np.loadtxt(Depthtext)[0]  # import depth.txt to be used in change_dep and change_dep_wk functions 
+            data_text = os.path.join(pwd,folder_name,'data.txt') # create path to open data.txt in project folder
+
+            fin= open(data_text,'r')  
+            val = fin.read()            
+            val=val.split()
+            points = val[2]
+            dx = float(val[5])
+
+            index = int(xc_wk.value/dx) # index = Xcoordinate/dx
+            depWK.value = '%4.2f' % (depth[index]*-1) # multiplied by -1 to have [+] for surface and [-] for underwater
+
+        else:
+            pass
         
     else: 
         container_Gauss.layout.display='none'
