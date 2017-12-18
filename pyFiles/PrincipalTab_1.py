@@ -25,20 +25,28 @@ label_intro1 = widgets.HTML("""<ul>
 
 <b>NOTE: </b>This file must be a text of 1 row; with depth values [-] for underwater and [+] for surface. Also, the values must be in <b>metric</b> units.<br><br>
 
-<li><b>Substep 2:</b> Once the file is uploaded, identify its name (e.g. MyBathy.txt) and its total horizontal length (THL) in the widgets below. Press "Plot Bathymetry" to visualize the bathymetry.<br><br></li>
+<li><b>Substep 2:</b> Once the file is uploaded, identify its name (e.g. MyBathy.txt), and its DX and/or its Total Horizontal Length (THL) in the widgets below. Press "Plot Bathymetry" to visualize the bathymetry.<br><br></li>
 
 <li><b>Substep 3:</b> If you are satisfied with the bathymetry, <b>you must press "Assemble Bathymetry File"</b> before continuing to <b>Step #2</b>. This will format the uploaded bathymetry file to the <b>required FUNWAVE format.</b><br><br></li>
 </ul>
 """,layout=widgets.Layout(width='90%'))
 
 
-bathy_name = widgets.HTML("File name:",layout=widgets.Layout(width = "10%"))
-upload_bathy_name = widgets.Text(layout=widgets.Layout(width = "25%")) # name of uploaded bathy
+bathy_name = widgets.HTML("File name:",layout=widgets.Layout(width = "8%"))
+upload_bathy_name = widgets.Text(layout=widgets.Layout(width = "20%")) # name of uploaded bathy
 
-THL = widgets.BoundedFloatText(description='THL',min = '10',value='200',max='1500',step='0.01',
-                               layout=widgets.Layout(width = "25%"))    # total horizontal length
-file_name_box = widgets.HBox([space_box2,bathy_name,upload_bathy_name,THL],
-                          layout=widgets.Layout(height ='75px'))
+
+parameter_options = ('Select Parameter','THL','DX')  
+parameter_list = widgets.Dropdown(options = parameter_options,layout=widgets.Layout(width = "20%"))
+
+THL = widgets.BoundedFloatText(description='THL',min = '10',value='200',max='1500000',step='0.01')    # total horizontal length
+THL_box = widgets.HBox([THL],layout=widgets.Layout(width = "25%"))
+
+dom = widgets.BoundedFloatText(description='DX',min = '0.0',value='1',max='100',step='0.1')   # Dx spacing
+dom_box = widgets.HBox([dom],layout=widgets.Layout(width = "25%"))
+
+file_name_box = widgets.HBox([bathy_name,upload_bathy_name,space_box2,parameter_list,THL_box,dom_box],
+                          layout=widgets.Layout(height ='75px',width = "90%"))
 
 Box_upload = widgets.VBox([label_intro1,space_box2,file_name_box],
                           layout=widgets.Layout(height ='500px'))
@@ -60,10 +68,6 @@ button and proceed to Step #2.<br>The values are in <b>metric</b> units.""",
                            layout=widgets.Layout(width='90%'))
 
 # domain discretization widgets
-
-dom = widgets.BoundedFloatText(description='DX',min = '0.0',value='1',max='100',step='0.5',
-                               layout=THL.layout)   # Dx spacing
-
 
 domain_box = widgets.HBox([THL,dom],layout=widgets.Layout(align_items='center',width = '90%',height ='40px'))
 
@@ -136,7 +140,7 @@ bathy_option_box = widgets.VBox([Box_upload,Box_SlopeBathy,Box_FlatBathy],layout
 plot_button = widgets.Button(description="Plot Bathymetry", layout=widgets.Layout(width='40%',height='40px'))
 
 # arrow image that points "button use flow"
-file = open("pyFiles/arrow.png", "rb")
+file = open("media/arrow.png", "rb")
 image = file.read()
 arrow  = widgets.Image(value=image,format='png',width=90,height=10)
 

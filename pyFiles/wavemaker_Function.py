@@ -46,7 +46,7 @@ def project_clicked(variable):
             
 ## generate bathy widgets function
 # this function works with the generate bathy widgets on PrincipalTab_1
-from pyFiles.PrincipalTab_1 import Box_upload,Box_SlopeBathy,Box_FlatBathy,MWL,space_box
+from pyFiles.PrincipalTab_1 import THL,dom,Box_upload,Box_SlopeBathy,Box_FlatBathy,MWL,space_box
 def toggle_choose_bathy(change):
     if change['new'] == 'Upload File':
         #show
@@ -55,6 +55,10 @@ def toggle_choose_bathy(change):
         Box_SlopeBathy.layout.display='none'
         Box_FlatBathy.layout.display='none'       
         
+        # edit THL and dom layout
+        THL.layout = widgets.Layout(width = "100%")
+        dom.layout = widgets.Layout(width = "100%")
+        
     elif change['new'] == 'Slope':
         #show
         Box_SlopeBathy.layout.display=''
@@ -62,6 +66,10 @@ def toggle_choose_bathy(change):
         #hide
         Box_upload.layout.display='none'
         Box_FlatBathy.layout.display='none'
+        
+        # edit THL and dom layout
+        THL.layout = widgets.Layout(width = "25%")
+        dom.layout = widgets.Layout(width = "25%")
         
     elif change['new'] == 'Flat':
         #show
@@ -73,11 +81,36 @@ def toggle_choose_bathy(change):
         Box_upload.layout.display='none' 
         Box_SlopeBathy.layout.display='none'
         
+        # edit THL and dom layout
+        THL.layout = widgets.Layout(width = "25%")
+        dom.layout = widgets.Layout(width = "25%")
+        
     else: 
         Box_upload.layout.display='none'
         Box_SlopeBathy.layout.display='none'
         Box_FlatBathy.layout.display='none'
 
+## generate upload bathy parameter (Choose THL or DX widgets) function
+# this function works with the upload bathy widgets on PrincipalTab_1
+from pyFiles.PrincipalTab_1 import THL_box, dom_box
+def toggle_choose_bathy_param(change):        
+    if change['new'] == 'THL':
+        #show
+        THL_box.layout.display=''
+        #hide
+        dom_box.layout.display='none'    
+        
+    elif change['new'] == 'DX':
+        #show
+        dom_box.layout.display=''
+        #hide
+        THL_box.layout.display='none' 
+        
+    else: 
+        #hide
+        THL_box.layout.display='none'
+        dom_box.layout.display='none'
+        
 ## generate initial condition widgets function
 # this function works with the widgets on PrincipalTab_2b
 from pyFiles.PrincipalTab_2 import init
@@ -152,7 +185,6 @@ def update_initial_conditions(variable):
 
 ## generate WAVEMAKER variables widgets function
 # this function works with the widgets on PrincipalTab_2c
-from pyFiles.PrincipalTab_1 import THL
 from pyFiles.PrincipalTab_2 import container_IniRec,container_Gauss,container_IniSol,container_WkReg
 from pyFiles.PrincipalTab_2 import container_JON1D,container_JON2D,container_WKIRR,container_TMA_1D, GammaTMA
 from pyFiles.PrincipalTab_2 import xc, xc_wk, dep, depWK, Xwavemaker # import Xoordinates and depth of Wavemaker 
@@ -578,10 +610,13 @@ from pyFiles.PRINCIPAL_TAB import project_button # import pertinent variables of
 project_button.on_click(project_clicked) # activate GUI
 
 ## PrincipalTab_1 functions
-from pyFiles.PrincipalTab_1 import bathy_list # import pertinent variables of PrincipalTab_1
+from pyFiles.PrincipalTab_1 import bathy_list, parameter_list # import pertinent variables of PrincipalTab_1
 
 bathy_list.observe(toggle_choose_bathy, 'value')   # activate bathy type variables
 toggle_choose_bathy({'new': bathy_list.value})
+
+parameter_list.observe(toggle_choose_bathy_param, 'value') # choose THL or DX for upload bathy option
+toggle_choose_bathy_param({'new': parameter_list.value})
 
 ## PrincipalTab_2 functions
 from pyFiles.PrincipalTab_2 import show_initial,ini_button,wave_maker,Dir,fric,dif,update_input_button,inputFile_button

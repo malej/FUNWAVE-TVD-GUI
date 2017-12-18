@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from pyFiles.PrincipalTab_1 import bathy_list, vert2_elev,vert2_loc,vert3_elev,THL,NumSeg,MWL,dom,upload_bathy_name
-from pyFiles.PRINCIPAL_TAB import principal_tab,title_text,container_title,space_box2, project_button
+from pyFiles.PrincipalTab_1 import bathy_list, parameter_list, vert2_elev,vert2_loc,vert3_elev,THL,NumSeg,MWL,dom,upload_bathy_name
+from pyFiles.PRINCIPAL_TAB import title_text,GUI_CONT,project_button
 from IPython.display import display, clear_output
 import os
 import shutil
@@ -15,6 +15,9 @@ plt.close(fig)
 def update_bathy(variable):
 # This function generates a new depth file by changing the uploaded bathy file to FUNWAVE's format
  
+    clear_output(wait=True) # clear any error message
+    display(GUI_CONT) # display GUI
+    
     pwd = os.getcwd()  # get current path
     s = title_text.value # project title given by the user (widget located in PRINCIPAL_TAB)
     s = s.replace(" ", "_")
@@ -25,23 +28,40 @@ def update_bathy(variable):
        
     depth = np.loadtxt(file_path) # depth = uploaded bathy file data
     M = 3 # number of rows (need three rows for Funwave to run a 1D case (so its really a 2D case))
-    N = depth.shape[0] # number of columns (points)
+    N = depth.shape[0] # number of columns (points). MUST BE GREATER THAN 1!!!
 
+    if N <= 1:
+        warning = 'Number of points must be greater than 1.'
+        raise Exception(warning)
+        
+    else:
+        if parameter_list.value == 'THL':
+            dom.value = THL.value / (N - 1) 
+
+        elif parameter_list.value == 'DX':
+            THL.value = (N - 1) * dom.value 
+
+        else: 
+            warning = 'Please choose Bathy parameter.'
+            raise Exception(warning)
+    
     depthFunwaveFormat = np.zeros([M,N]) # depth variable with FUNWAVE format (FF) dimensions
-
+    
     for i in range(M):
         depthFunwaveFormat[i,:] = depth[:]*-1 # multiplied by -1 because in FUNWAVE underwater is [+] and surface is [-]
     
     depth_text = os.path.join(pwd,folder_name,'depth.txt') # create path to save FF depth file in project folder
     np.savetxt(depth_text,depthFunwaveFormat) # save FF depth file in depth_text path
-
-    dx = THL.value/(float(N)) # compute dx (space between points)
+    
+    dx = dom.value # dx (space between points)
     
     data_text = os.path.join(pwd,folder_name,'data.txt') # create path to save data.txt in project folder
     DataFile = open(data_text,'w')         # save text file with points and dx for future use in input .txt
     dataText = """points = %d
     dx = %f
-    DO NOT DELETE ME!!!!"""%(N,dx)
+    DO NOT DELETE ME!!!!
+    I am generated and used by the GUI.
+    """%(N,dx)
     DataFile.write(dataText)
     DataFile.close()
  
@@ -57,9 +77,25 @@ def on_plot_uploaded_file(variable):      # plot uploaded bathy file function
     file_path = os.path.join(pwd,folder_name,filename) # create path to the uploaded depth file in project folder
     
     depth = np.loadtxt(file_path) # depth = uploaded bathy file data
-    points = depth.shape[0] # number of columns (points)
+    points = depth.shape[0] # number of columns (points). MUST BE GREATER THAN 1!!!
 
-    dx = THL.value/(float(points)) # compute dx (space between points)
+    
+    if points <= 1:
+        warning = 'Number of points must be greater than 1.'
+        raise Exception(warning)
+        
+    else:
+        if parameter_list.value == 'THL':
+            dom.value = THL.value / (points - 1) 
+
+        elif parameter_list.value == 'DX':
+            THL.value = (points - 1) * dom.value 
+
+        else: 
+            warning = 'Please choose Bathy parameter.'
+            raise Exception(warning)
+    
+    dx = dom.value # dx (space between points)
     x = np.linspace(0,THL.value,points) # x array
    
     ax.clear()
@@ -134,7 +170,9 @@ def compute_flat(variable):
     DataFile = open(data_text,'w')         # save text file with points and dx for future use in input .txt
     dataText = """points = %d
     dx = %f
-    DO NOT DELETE ME!!!!"""%(points,dx)
+    DO NOT DELETE ME!!!!
+    I am generated and used by the GUI.
+    """%(points,dx)
     DataFile.write(dataText)
     DataFile.close()
     
@@ -176,7 +214,9 @@ def compute_high_difference(variable):
     DataFile = open(data_text,'w')         # save text file with points and dx for future use
     dataText = """points = %d
     dx = %f
-    DO NOT DELETE ME!!!!"""%(points,dx)
+    DO NOT DELETE ME!!!!
+    I am generated and used by the GUI.
+    """%(points,dx)
     DataFile.write(dataText)
     DataFile.close()
     
@@ -257,7 +297,11 @@ def on_plot(variable):      # plot slope bathymetry function
     display(fig)
     
     
-def on_save_clicked(variable): # save FUNWAVE Format (FF) bathy text file function              
+def on_save_clicked(variable): # save FUNWAVE Format (FF) bathy text file function 
+    
+    clear_output(wait=True)
+    display(GUI_CONT) 
+    
     if bathy_list.value == 'Upload File': # if the chosen bathy type is Upload, go to update_bathy function
         update_bathy(variable)
         
@@ -310,8 +354,7 @@ def on_save_clicked(variable): # save FUNWAVE Format (FF) bathy text file functi
         
 def on_plot_clicked(variable):    # plot bathymetry fucntion
     clear_output(wait=True)
-    display(space_box2,container_title,space_box2) # display project text box and button
-    display(principal_tab) # display GUI
+    display(GUI_CONT) 
     
     if bathy_list.value == 'Slope':  # if the chosen bathy type is Slope, go to on_plot function
         on_plot(variable)
