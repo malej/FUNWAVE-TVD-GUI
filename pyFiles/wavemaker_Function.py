@@ -173,7 +173,7 @@ def toggle_waveMaker(change):
         
         # reset xcoordinate of wavemaker 
         xc.value = 0 
-        xc.max = THL.value
+        xc.max = THL.value - 5
         
     elif change['new'] == 'INI_GAUS':
         #show
@@ -189,7 +189,7 @@ def toggle_waveMaker(change):
         
         # reset xcoordinate of wavemaker 
         xc.value = 0 
-        xc.max = THL.value
+        xc.max = THL.value - 5
         
         
     elif change['new'] == 'INI_SOL':
@@ -207,7 +207,7 @@ def toggle_waveMaker(change):
         # reset xcoordinate and wavemaker depth values
         dep.value = '0'
         Xwavemaker.value = 0
-        Xwavemaker.max = THL.value
+        Xwavemaker.max = THL.value - 5
         
     elif change['new'] == 'WK_REG':
         #show
@@ -223,7 +223,7 @@ def toggle_waveMaker(change):
     
         # reset xcoordinate and wavemaker depth values
         xc_wk.value = 0 
-        xc_wk.max = THL.value
+        xc_wk.max = THL.value - 5
         depWK.value = '0'
         
     elif change['new'] == 'JON_1D':
@@ -245,7 +245,7 @@ def toggle_waveMaker(change):
         
         # reset xcoordinate and wavemaker depth values
         xc_wk.value = 0 
-        xc_wk.max = THL.value 
+        xc_wk.max = THL.value - 5
         depWK.value = '0'
     
     elif change['new'] == 'JON_2D':
@@ -267,7 +267,7 @@ def toggle_waveMaker(change):
         
         # reset xcoordinate and wavemaker depth values
         xc_wk.value = 0 
-        xc_wk.max = THL.value 
+        xc_wk.max = THL.value - 5 
         depWK.value = '0'
     
     elif change['new'] == 'WK_IRR':
@@ -289,7 +289,7 @@ def toggle_waveMaker(change):
         
         # reset xcoordinate and wavemaker depth values
         xc_wk.value = 0 
-        xc_wk.max = THL.value 
+        xc_wk.max = THL.value - 5
         depWK.value = '0'
         
     elif change['new'] == 'TMA_1D/IRR_WAVE':
@@ -311,7 +311,7 @@ def toggle_waveMaker(change):
         
         # reset xcoordinate and wavemaker depth values
         xc_wk.value = 0 
-        xc_wk.max = THL.value 
+        xc_wk.max = THL.value - 5
         depWK.value = '0'
         
     else: 

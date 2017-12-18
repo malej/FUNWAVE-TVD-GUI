@@ -138,9 +138,12 @@ label_waveMaker = widgets.HTML("""Click <a href="http://udel.edu/~fyshi/FUNWAVE/
                                the parameter's definitions.""",
                                 layout = widgets.Layout(height = '35px'))
 
+wave_note = widgets.HTML("""<font color="red"><b>NOTE:</b> These are internal wave makers, hence they should not be 
+located at the boundaries.</font>""")
+
 #  wavemaker variables
 xc_label = widgets.HTML('Xc',layout = widgets.Layout(width = "20%"))
-xc = widgets.BoundedFloatText(layout = widgets.Layout(width = "30%"))
+xc = widgets.BoundedFloatText(min = 5.0, layout = widgets.Layout(width = "30%"))
 container_xc = widgets.HBox(children=[xc_label,xc],
                             layout = widgets.Layout(height = '45px'))
 
@@ -170,12 +173,12 @@ container_LagTime = widgets.HBox(children=[LagTime_label,LagTime],
                                  layout = widgets.Layout(height = '45px'))
 
 Xwavemaker_label = widgets.Label('X_wavemaker',layout = widgets.Layout(width = "20%"))
-Xwavemaker = widgets.BoundedFloatText(layout = widgets.Layout(width = "30%"))
+Xwavemaker = widgets.BoundedFloatText(min = 5.0,layout = widgets.Layout(width = "30%"))
 container_Xwavemaker = widgets.HBox(children=[Xwavemaker_label,Xwavemaker],
                                  layout = widgets.Layout(height = '45px'))
 
 xc_wk_label = widgets.Label('Xc_WK',layout = widgets.Layout(width = "20%"))
-xc_wk = widgets.BoundedFloatText(layout = widgets.Layout(width = "30%"))
+xc_wk = widgets.BoundedFloatText(min = 5.0,layout = widgets.Layout(width = "30%"))
 container_xc_wk = widgets.HBox(children=[xc_wk_label,xc_wk],
                                layout = widgets.Layout(height = '45px'))
 
@@ -215,7 +218,8 @@ container_ywidth_wk = widgets.HBox(children=[ywidth_wk_label,ywidth_wk],
                                layout = widgets.Layout(height = '45px'))
 
 deltaWK_label = widgets.Label('DELTA_WK',layout = widgets.Layout(width = "20%"))
-deltaWK = widgets.BoundedFloatText(min=0,max=5,step=0.1,value = 0.3,layout = widgets.Layout(width = "30%")) #  usually, delta =  0.3 to 0.6
+deltaWK = widgets.BoundedFloatText(min=0,max=5,step=0.1,value = 0.3,
+                                   layout = widgets.Layout(width = "30%")) #  usually, delta =  0.3 to 0.6
 container_deltaWK = widgets.HBox(children=[deltaWK_label,deltaWK],
                              layout = widgets.Layout(height = '45px'))
 
@@ -294,7 +298,8 @@ container_JON2D = widgets.HBox([container_JON2D_col1,container_JON2D_col2],
 container_JON1D_col1 = widgets.VBox(children=[container_xc_wk,container_depWK,container_TimeRamp,
                          container_GammaTMA,container_NFreq],
                          layout = widgets.Layout(width = '50%'))
-container_JON1D_col2 = widgets.VBox(children=[container_FreqPeak,container_FreqMin,container_FreqMax,container_deltaWK,container_HMO],
+container_JON1D_col2 = widgets.VBox(children=[container_FreqPeak,container_FreqMin,container_FreqMax,
+                         container_deltaWK,container_HMO],
                          layout = widgets.Layout(width = '50%'))
 container_JON1D = widgets.HBox([container_JON1D_col1,container_JON1D_col2],
                               layout = widgets.Layout(width = '90%'))
@@ -318,7 +323,7 @@ container_TMA_1D = widgets.HBox([container_TMA_1D_col1,container_TMA_1D_col2],
                                layout = widgets.Layout(width = '90%'))
 
 # tab 2c container box
-page_waveMaker = widgets.VBox(children=[wave_container,label_waveMaker,container_IniRec,
+page_waveMaker = widgets.VBox(children=[wave_container,label_waveMaker,wave_note,container_IniRec,
                              container_Gauss,container_IniSol,
                              container_WkReg,container_JON1D,container_JON2D,
                              container_WKIRR,container_TMA_1D],
@@ -440,7 +445,7 @@ inputUpdate_box = widgets.HBox([inputFile_label,update_input_button],
 # print input.txt for verification 
 input_verification = widgets.HTML() 
 
-input_note = widgets.HTML("""<font color="red"><b>NOTE:</b> CCE users can verify their input.txt by opening it in your Project's folder located at the Jupyter Notebook directory.</font>""")
+input_note = widgets.HTML("""<font color="red"><b>NOTE:</b> CCE users can verify their <b>input.txt</b> by opening it in your Project's folder located at the Jupyter Notebook directory.</font>""")
 
 inputFile_box = widgets.Box([input_verification],layout = widgets.Layout(height = '285px',width = '90%',
                                                                         border='solid 2px grey'))

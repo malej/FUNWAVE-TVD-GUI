@@ -1,4 +1,5 @@
 import ipywidgets as widgets
+from IPython.display import Image
 from traitlets import link
 
 ##########################################################
@@ -132,14 +133,19 @@ Box_FlatBathy = widgets.VBox(children=[label_intro3,space_box,domain_box,space_b
 bathy_option_box = widgets.VBox([Box_upload,Box_SlopeBathy,Box_FlatBathy],layout=widgets.Layout(height ='420px'))
 
 #  Plot and Save buttons widgets
-plot_button = widgets.Button(description="Plot Bathymetry", layout=widgets.Layout(width='50%',height='40px'))
+plot_button = widgets.Button(description="Plot Bathymetry", layout=widgets.Layout(width='40%',height='40px'))
 
+# arrow image that points "button use flow"
+file = open("pyFiles/arrow.png", "rb")
+image = file.read()
+arrow  = widgets.Image(value=image,format='png',width=90,height=10)
 
 #  Plot and Save button widget
 save_button = widgets.Button(description="Assemble Bathymetry File",
-                             layout=widgets.Layout(width = '50%',height = '40px'))
+                             layout=widgets.Layout(width = '40%',height = '40px'))
+
 # HBox for plot and save buttons
-plotSaveHBox = widgets.HBox([plot_button, save_button],layout=widgets.Layout(width='90%')) 
+plotSaveHBox = widgets.HBox([plot_button,arrow, save_button],layout=widgets.Layout(width='90%')) 
 
 
 # Bathymetry tab
