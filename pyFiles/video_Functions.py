@@ -36,7 +36,7 @@ def generate_vid(folder_path, type_vid):   # run ffpmpeg function
     
     # set fmpeg command line depending on the video type (eta, wave height, hmax, etc...)
     string1 = "ffmpeg -r %d -y -i %s" % (FrameSec.value,type_vid)
-    string2 = "%5d.png -s 815x735 "
+    string2 = "_%5d.png -s 815x735 "
     string3 = "%sMovie.mp4" % (type_vid)
     run_ffmpeg = string1+string2+string3
     
