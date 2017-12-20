@@ -17,14 +17,14 @@ space_box1 = widgets.Box(layout=widgets.Layout(height ='25px', width='90%')) # b
 space_box2 = widgets.Box(layout=widgets.Layout(width='10%')) # box created to have space among widgets
 
 # label with input.txt intro
-label_input_INTRO = widgets.HTML("""This Notebook creates <b>FUNWAVE's
-input.txt</b> according to the user's specifications.<br> It consists of the following six steps:<br><br>
+label_input_INTRO = widgets.HTML("""This section sets up and creates <b>FUNWAVE's
+</b> driver file <b>(input.txt)</b> according to the user's specifications.<br> It consists of the following six steps:<br><br>
 <ol>
 <li><b>Project Intro:</b> In this tab the user submits the <b>Number of Processors</b>, the simulation's <b>Total Time</b>, and the <b>Plot Interval.</b><br></li>
 
 <li><b>Initial Conditions:</b> In this tab the user determines if the project has 
 initial conditions and specifies their file names.<br>
-<b>NOTE:</b> These files must be uploaded in the Project's folder.<br></li>
+<b>NOTE:</b> These files must be uploaded in the project folder, similar as the  user-defined bathymetry file.<br></li>
 
 <li><b>Wave Maker:</b> The user chooses the wave maker and inputs its respective 
 parameters.<br></li>
@@ -33,7 +33,7 @@ parameters.<br></li>
 
 <li><b>Output Options:</b> The user picks all the desired output variables from the simulation.<br></li>
 
-<li><b>Generate Input:</b> The user verifies and generates the project's driver <b>input.txt</b> file.</li>
+<li><b>Generate Input:</b> Finally the  user verifies and generates the project driver <b>input.txt</b> file.</li>
 </ol>""")
 
 
@@ -138,8 +138,8 @@ label_waveMaker = widgets.HTML("""Click <a href="http://udel.edu/~fyshi/FUNWAVE/
                                the parameter's definitions.""",
                                 layout = widgets.Layout(height = '35px'))
 
-wave_note = widgets.HTML("""<font color="red"><b>NOTE:</b> These are internal wave makers, hence they should not be 
-located at the boundaries.</font>""")
+wave_note = widgets.HTML("""<font color="red"><b>NOTE:</b> This is an internal wave maker. Hence, it should NOT be 
+located at the boundary (x=0).</font>""")
 
 #  wavemaker variables
 xc_label = widgets.HTML('Xc',layout = widgets.Layout(width = "20%"))
@@ -445,12 +445,12 @@ inputUpdate_box = widgets.HBox([inputFile_label,update_input_button],
 # print input.txt for verification 
 input_verification = widgets.HTML() 
 
-input_note = widgets.HTML("""<font color="red"><b>NOTE:</b> CCE users can verify their <b>input.txt</b> by opening it in your Project's folder located at the Jupyter Notebook directory.</font>""")
+input_note = widgets.HTML("""<font color="red"><b>NOTE:</b> CCE users can verify their <b>input.txt</b> by opening it in your Project folder located at the Jupyter Notebook directory.</font>""")
 
 inputFile_box = widgets.Box([input_verification],layout = widgets.Layout(height = '285px',width = '90%',
                                                                         border='solid 2px grey'))
 # generate input file button
-inputFile_label2 = widgets.HTML("""If you are satisfied with your input values, press the Generate Input File button.""",
+inputFile_label2 = widgets.HTML("""If you are satisfied with your input values, press the <b>Generate Input File</b> button.""",
                                 layout = widgets.Layout(width = "50%",height = '25px'))
 inputFile_button = widgets.Button(description = 'Generate Input File',layout = widgets.Layout(width = "50%",
                                   height = '40px'))

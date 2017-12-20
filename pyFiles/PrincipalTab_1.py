@@ -22,12 +22,12 @@ bathy_list_container = widgets.VBox([label_intro,bathy_list],layout = widgets.La
 
 label_intro1 = widgets.HTML("""<ul> 
 <li><b>Substep 1:</b> Upload your file in the <b>Project Title</b> folder through  the <b>Jupyter Notebook home directory</b>. Go inside your Projet's folder and upload the file by pressing the "Upload" button located at the top right corner of the directory.<br></li>
+<br>
+<b>NOTE: </b>This file must be a text file (ASCII) of 1 column; with depth values [-] for underwater (below mean water level). Also, the values must be in <b>metric</b> units.<br><br>
 
-<b>NOTE: </b>This file must be a text of 1 row; with depth values [-] for underwater and [+] for surface. Also, the values must be in <b>metric</b> units.<br><br>
+<li><b>Substep 2:</b> Once the file is uploaded, identify its name (e.g., myBathy.txt), and eitehr its step size (DX) or its Total Horizontal Length (THL) in the widgets/box below. Press "Plot Bathymetry" to visualize the bathymetry.<br><br></li>
 
-<li><b>Substep 2:</b> Once the file is uploaded, identify its name (e.g. MyBathy.txt), and its DX and/or its Total Horizontal Length (THL) in the widgets below. Press "Plot Bathymetry" to visualize the bathymetry.<br><br></li>
-
-<li><b>Substep 3:</b> If you are satisfied with the bathymetry, <b>you must press "Assemble Bathymetry File"</b> before continuing to <b>Step #2</b>. This will format the uploaded bathymetry file to the <b>required FUNWAVE format.</b><br><br></li>
+<li><b>Substep 3:</b> If you are satisfied with the bathymetry, you must press <b> Assemble Bathymetry File</b> button before continuing to <b>Step #2</b>. This will format the uploaded bathymetry file to the <b>required FUNWAVE format.</b><br><br></li>
 </ul>
 """,layout=widgets.Layout(width='90%'))
 
@@ -59,11 +59,11 @@ Box_upload = widgets.VBox([label_intro1,space_box2,file_name_box],
 NumSeg = 2
 
 # label intro
-label_intro2 = widgets.HTML("""This Option plots and saves simple one-dimensional <b>slope</b>
-bathymetries consisting of 2 segments and 3 vertices. The user can select the <b>total horizontal lenght</b> 
-of the bathymetry <b>(THL)</b>, the <b>spacing</b> between the points <b>(DX)</b>,
-and the <b>elevation</b> and <b>location</b> of the vertices. Once the desired bathymetry is plotted,
-press the "Assemble Bathymetry File"
+label_intro2 = widgets.HTML("""This option plots and saves a simple one-dimensional <b>slope</b>
+bathymetry consisting of 2 segments and 3 vertices. The user can select the <b>total horizontal lenght</b> 
+of the bathymetry <b>(THL)</b>, the discretization (horizontal spatial step size)  <b>(DX)</b>,
+and the <b>elevation</b> with the  <b>location</b> of the vertices. Once the desired bathymetry is plotted,
+press the <b>Assemble Bathymetry File</b>
 button and proceed to Step #2.<br>The values are in <b>metric</b> units.""",
                            layout=widgets.Layout(width='90%'))
 
@@ -72,7 +72,7 @@ button and proceed to Step #2.<br>The values are in <b>metric</b> units.""",
 domain_box = widgets.HBox([THL,dom],layout=widgets.Layout(align_items='center',width = '90%',height ='40px'))
 
 # label with elevation NOTE
-label_NOTE = widgets.HTML("""<b>NOTE:</b> Depth values are [-] for underwater and [+] for surface.""")
+label_NOTE = widgets.HTML("""<b>NOTE:</b> Depth values are [-] for underwater (below mean water level).""")
 
 ## vertex elevation and location floatsliders:
 # vertex 1 
@@ -119,11 +119,11 @@ Box_SlopeBathy = widgets.VBox(children=[label_intro2,space_box,domain_box,space_
 ######################################
 
 # label intro
-label_intro3 = widgets.HTML("""This Option plots and saves simple one-dimensional <b>flat</b>
-bathymetries with a constant depth. The user can select the <b>total horizontal lenght</b> 
+label_intro3 = widgets.HTML("""This option plots and saves a simple one-dimensional <b>flat</b>
+bathymetry with a constant depth. The user can select the <b>total horizontal lenght</b> 
 of the bathymetry <b>(THL)</b>, the <b>spacing</b> between the points <b>(DX)</b>,
 and the <b>Depth</b>. Once the desired bathymetry is plotted,
-press the "Assemble Bathymetry File"
+press the <b>Assemble Bathymetry File</b>
 button and proceed to Step #2.<br>The values are in <b>metric</b> units.""",
                            layout=widgets.Layout(width='90%'))
 
