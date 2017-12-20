@@ -35,8 +35,8 @@ def generate_vid(folder_path, type_vid):   # run ffpmpeg function
     os.chdir(folder_path) # move to directory where the images are located (output_plots directory)
     
     # set fmpeg command line depending on the video type (eta, wave height, hmax, etc...)
-    string1 = "ffmpeg -r %d -y -i %s" % (FrameSec.value,type_vid)
-    string2 = "_%5d.png -s 815x735 "
+    string1 = "ffmpeg -r %d -i %s" % (FrameSec.value,type_vid)
+    string2 = "%5d.png "
     string3 = "%sMovie.mp4" % (type_vid)
     run_ffmpeg = string1+string2+string3
     
