@@ -22,7 +22,7 @@ bathy_list_container = widgets.VBox([label_intro,bathy_list],layout = widgets.La
 
 label_intro1 = widgets.HTML("""<ul> 
 <li><b>Substep 1:</b> Upload your file in the <b>Project Title</b> folder through  the <b>Jupyter Notebook home directory</b>. Go inside your Projet's folder and upload the file by pressing the "Upload" button located at the top right corner of the directory.<br></li>
-<br>
+
 <b>NOTE: </b>This file must be a text file (ASCII) of 1 column; with depth values [-] for underwater (below mean water level). Also, the values must be in <b>metric</b> units.<br><br>
 
 <li><b>Substep 2:</b> Once the file is uploaded, identify its name (e.g., myBathy.txt), and eitehr its step size (DX) or its Total Horizontal Length (THL) in the widgets/box below. Press "Plot Bathymetry" to visualize the bathymetry.<br><br></li>
