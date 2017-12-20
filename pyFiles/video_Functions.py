@@ -6,14 +6,14 @@ import os
 import io
 import base64
 
-
-
 # import pertaining variables: 
 from pyFiles.PRINCIPAL_TAB import principal_tab,title_text,space_box2,container_title     
 # ^ import tab structure & projects name
 from pyFiles.PrincipalTab_2 import time_text, plotInt_text     # total time and plot interval in (s)
 from pyFiles.PrincipalTab_3 import T_INTV_MEAN, steady_time    # Wave Height time interval & starting time
+from pyFiles.PrincipalTab_4 import exec_list # to know which model was ran (exec_list.value)
 from pyFiles.PrincipalTab_5 import TimeBegin_text,TimeLimit_text,video_load,plot_time,out_list, Xmax_vid,Xmax_plt,Xmin_vid,Xmin_plt,Ymax_vid,Ymax_plt,Ymin_vid,Ymin_plt,FrameSec    # time values, axis limits and video loadbar widget
+
 
 def show_vid(folder_path, type_vid): # show video in notebook function
         
@@ -35,9 +35,15 @@ def generate_vid(folder_path, type_vid):   # run ffpmpeg function
     os.chdir(folder_path) # move to directory where the images are located (output_plots directory)
     
     # set fmpeg command line depending on the video type (eta, wave height, hmax, etc...)
-    string1 = "ffmpeg -r %d -i %s" % (FrameSec.value,type_vid)
-    string2 = "%5d.png "
+ 
+    if exec_list.value == "FUNWAVE CCE":
+        string1 = "/funwave/ffmpeg.command.dir/ffmpeg -r %d -y -i %s" % (FrameSec.value,type_vid)
+    else:
+        string1 = "ffmpeg -r %d -y -i %s" % (FrameSec.value,type_vid)
+
+    string2 = "%5d.png -s 815x735 "
     string3 = "%sMovie.mp4" % (type_vid)
+
     run_ffmpeg = string1+string2+string3
     
     os.system(run_ffmpeg) # create video with ffmpeg terminal command 
