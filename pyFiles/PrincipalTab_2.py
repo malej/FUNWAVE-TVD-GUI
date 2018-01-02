@@ -73,7 +73,7 @@ none-zero elevation and velocity values.""")
 show_initial = widgets.Checkbox(description='Activate initial conditions') # turn on inicial condition checkbox
 
 label_iniCond1 = widgets.HTML("""The Initial surface (Z) file dictates if there is
-        a perturbation on the originally flat water surface. The initial U velocity files specifies 
+        a perturbation on the originally flat water surface. The initial U velocity file specifies 
         the velocities in the x direction. They must be uploaded in 
         the project title folder before running the simulation. Once you have identified their names
         (e.g. Ini_Z.txt), press "Generate Initial Condition Files" to format the uploaded files to the
@@ -142,6 +142,11 @@ wave_note = widgets.HTML("""<font color="red"><b>NOTE:</b> This is an internal w
 located at the boundary (x=0).</font>""")
 
 #  wavemaker variables
+EqualEnergy_label = widgets.HTML('EqualEnergy',layout = widgets.Layout(width = "20%"))
+EqualEnergy = widgets.Checkbox(value=True) 
+container_EqualEnergy = widgets.HBox(children=[EqualEnergy_label,EqualEnergy],
+                            layout = widgets.Layout(height = '45px'))
+
 xc_label = widgets.HTML('Xc',layout = widgets.Layout(width = "20%"))
 xc = widgets.BoundedFloatText(min = 5.0, layout = widgets.Layout(width = "30%"))
 container_xc = widgets.HBox(children=[xc_label,xc],
@@ -289,7 +294,7 @@ container_JON2D_col1 = widgets.VBox(children=[container_xc_wk,container_depWK,co
                          layout = widgets.Layout(align_items = 'stretch' ))  # add this WM option to 2d gui
 
 container_JON2D_col2 = widgets.VBox(children=[container_FreqPeak,container_FreqMin,container_FreqMax,container_HMO,
-                         container_ThetaPeak,container_NFreq,container_NTheta],
+                         container_ThetaPeak,container_NFreq,container_NTheta,container_EqualEnergy],
                          layout = widgets.Layout(width = '50%'))  # add this WM option to 2d gui
 
 container_JON2D = widgets.HBox([container_JON2D_col1,container_JON2D_col2],
@@ -299,7 +304,7 @@ container_JON1D_col1 = widgets.VBox(children=[container_xc_wk,container_depWK,co
                          container_GammaTMA,container_NFreq],
                          layout = widgets.Layout(width = '50%'))
 container_JON1D_col2 = widgets.VBox(children=[container_FreqPeak,container_FreqMin,container_FreqMax,
-                         container_deltaWK,container_HMO],
+                         container_deltaWK,container_HMO,container_EqualEnergy],
                          layout = widgets.Layout(width = '50%'))
 container_JON1D = widgets.HBox([container_JON1D_col1,container_JON1D_col2],
                               layout = widgets.Layout(width = '90%'))
@@ -308,7 +313,7 @@ container_WkIrr_col1 = widgets.VBox(children=[container_xc_wk,container_yc_wk,co
                          container_FreqPeak,container_SigmaTheta,container_deltaWK],
                          layout = widgets.Layout(width = '50%'))
 container_WkIrr_col2 = widgets.VBox(children=[container_FreqMin,container_FreqMax,container_HMO,
-                         container_GammaTMA,container_ThetaPeak,container_NFreq,container_NTheta],
+                         container_GammaTMA,container_ThetaPeak,container_NFreq,container_NTheta,container_EqualEnergy],
                          layout = widgets.Layout(width = '50%'))
 container_WKIRR = widgets.HBox([container_WkIrr_col1,container_WkIrr_col2],
                               layout = widgets.Layout(width = '90%'))   # add this WM option to 2d gui
@@ -317,7 +322,7 @@ container_TMA_1D_col1 = widgets.VBox(children=[container_xc_wk,container_depWK,
                          container_TimeRamp,container_GammaTMA,container_NFreq],
                          layout = widgets.Layout(width = '50%'))
 container_TMA_1D_col2 = widgets.VBox(children=[container_FreqPeak,container_FreqMin,
-                         container_FreqMax,container_deltaWK,container_HMO],
+                         container_FreqMax,container_deltaWK,container_HMO,container_EqualEnergy],
                          layout = widgets.Layout(width = '50%'))
 container_TMA_1D = widgets.HBox([container_TMA_1D_col1,container_TMA_1D_col2],
                                layout = widgets.Layout(width = '90%'))
@@ -335,7 +340,7 @@ page_waveMaker = widgets.VBox(children=[wave_container,label_waveMaker,wave_note
 
 # sponge layer tab intro label
 sponge_label = widgets.HTML("""FUNWAVE possess a DHI type sponge layer. 
-                        The user needs to specify the widths of four boundaries 
+                        The user needs to specify the widths of two boundaries 
                         and parameters.""",layout = widgets.Layout(width = '90%',height = '55px')) 
 
 ## column 1 of sponge layer tab:

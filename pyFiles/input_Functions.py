@@ -12,7 +12,7 @@ from pyFiles.PRINCIPAL_TAB import GUI_CONT,title_text,container_title,space_box2
 from pyFiles.PrincipalTab_2 import processors_text, time_text,plotInt_text,show_initial, dif, fric, Dir, wave_maker,csp_text,CDsponge_text,LSW_text, RSW_text,BSW_text,TSW_text,R_sponge_text,A_sponge_text,input_verification
 
 # import wavemaker variables from principal tab 2 (continued)
-from pyFiles.PrincipalTab_2 import xc, yc, wid, amp, dep, LagTime, Xwavemaker, xc_wk, yc_wk, tPeriod, ampWK, depWK, thetaWK, TimeRamp, ywidth_wk, deltaWK, FreqPeak, FreqMin, FreqMax, HMO, GammaTMA, ThetaPeak, NFreq, NTheta 
+from pyFiles.PrincipalTab_2 import xc, yc, wid, amp, dep, LagTime, Xwavemaker, xc_wk, yc_wk, tPeriod, ampWK, depWK, thetaWK, TimeRamp, ywidth_wk, deltaWK, FreqPeak, FreqMin, FreqMax, HMO, GammaTMA, ThetaPeak, NFreq, NTheta, EqualEnergy 
 
 # import pertinent variables from principal tab 3
 from pyFiles.PrincipalTab_3 import DEPTH_OUT,U,V,ETA,Hmax,Hmin,MFmax,Umax,VORmax,Umean,Vmean,ETAmean,MASK,MASK9,SourceX, SourceY,P,Q,Fx,Fy,Gx,Gy,AGE,WaveHeight,steady_time,T_INTV_MEAN
@@ -22,6 +22,11 @@ from pyFiles.PrincipalTab_3 import DEPTH_OUT,U,V,ETA,Hmax,Hmin,MFmax,Umax,VORmax
 def boolean_function(variable):    
 # This function changes the checkbox variables True & False to T & F
 # since that is the format of FUNWAVE's input file. 
+    if EqualEnergy.value == True:
+        EqEn = 'T'
+    else:
+        EqEn = 'F'
+    
     if show_initial.value == True:
         turn_on_IC = 'T'
     else:
@@ -169,11 +174,11 @@ def boolean_function(variable):
         waveMaker = wave_maker.value
     
     # call generate input.txt function:
-    generate_input_file(turn_on_IC,dif_text,fric_text,dir_text,depth_out,
+    generate_input_file(EqEn,turn_on_IC,dif_text,fric_text,dir_text,depth_out,
                        u,v,eta,hmax,hmin,mfmax,umax,vormax,umean,vmean,etamean,mask,
                        mask9,sourcex,sourcey,p,q,fx,fy,gx,gy,age,waveheight,steady_time,T_INTV_MEAN,waveMaker) 
 
-def wave_param_generate_input(wave_maker_parameters):
+def wave_param_generate_input(wave_maker_parameters,EqEn):
 # this function creates the wave maker parameter list that will be added to the input txt
     
     if wave_maker.value == 'INI_REC':
@@ -197,8 +202,10 @@ Hmo = %4.2f
 Delta_WK = %4.2f
 GammaTMA = %4.2f
 Nfreq = %d
+EqualEnergy = %s
         """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,TimeRamp.value,
-               FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,deltaWK.value,GammaTMA.value,int(NFreq.value))
+               FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,deltaWK.value,
+               GammaTMA.value,int(NFreq.value),EqEn)
         wave_maker_parameters.value = parameter
     
     elif wave_maker.value == 'JON_2D':
@@ -215,9 +222,11 @@ GammaTMA = %4.2f
 Nfreq = %d
 Ntheta = %d
 ThetaPeak = %4.2f
+EqualEnergy = %s
         """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,TimeRamp.value,
-               FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,deltaWK.value, GammaTMA.value,int(NFreq.value),int(NTheta.value),
-               ThetaPeak.value)
+               FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,deltaWK.value, 
+               GammaTMA.value,int(NFreq.value),int(NTheta.value),
+               ThetaPeak.value,EqEn)
         wave_maker_parameters.value = parameter
         
     elif wave_maker.value == 'INI_GAUS':
@@ -263,8 +272,9 @@ FreqMax = %4.2f
 Hmo = %4.2f
 GammaTMA = %4.2f
 Nfreq = %d
+EqualEnergy = %s
         """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,TimeRamp.value,deltaWK.value,
-               FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,GammaTMA.value,int(NFreq.value))
+               FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,GammaTMA.value,int(NFreq.value),EqEn)
         wave_maker_parameters.value = parameter
            
     else: 
@@ -274,7 +284,7 @@ Nfreq = %d
     return(wave_maker_parameters.value)    
     
     
-def generate_input_file(turn_on_IC,dif_text,fric_text,dir_text,depth_out,
+def generate_input_file(EqEn,turn_on_IC,dif_text,fric_text,dir_text,depth_out,
                        u,v,eta,hmax,hmin,mfmax,umax,vormax,umean,vmean,etamean,mask,
                        mask9,sourcex,sourcey,p,q,fx,fy,gx,gy,age,waveheight,steady_time,T_INTV_MEAN,waveMaker):
 # this function generates FUNWAVE's input.txt
@@ -304,7 +314,7 @@ def generate_input_file(turn_on_IC,dif_text,fric_text,dir_text,depth_out,
             input_path = os.path.join(pwd,folder_name,'input.txt') # create path to save input.txt in project folder
 
             wave_maker_param = widgets.HTML(layout = widgets.Layout(width = "20%"))
-            wave_maker_parameters = wave_param_generate_input(wave_maker_param) # call function that shows the wavemaker parameters
+            wave_maker_parameters = wave_param_generate_input(wave_maker_param,EqEn) # call function that shows the wavemaker parameters
 
             fin = open(input_path,'w') # create input file
 
@@ -485,7 +495,7 @@ def generate_input_file(turn_on_IC,dif_text,fric_text,dir_text,depth_out,
             warning = "No depth file found. Verify if it was generated in Step 1: Bathymetry."
             raise Exception(warning)
         
-def wave_param_show_input(variable):
+def wave_param_show_input(EqEn):
 # this function creates the wave maker parameter list that will be added to the input txt
     wave_maker_parameters = widgets.HTML(layout = widgets.Layout(width = "20%"))
     if wave_maker.value == 'INI_REC':
@@ -498,19 +508,19 @@ def wave_param_show_input(variable):
         
         parameter = """Xc_WK = %4.2f</br>Yc_WK = %4.2f</br>DEP_WK = %4.2f</br>
         Time_ramp = %4.2f</br>Delta_WK = %4.2f</br>FreqPeak = %4.2f</br>FreqMin = %4.2f</br>
-        FreqMax = %4.2f</br>Hmo = %4.2f</br>GammaTMA = %4.2f</br>Nfreq = %4.2d</br>
+        FreqMax = %4.2f</br>Hmo = %4.2f</br>GammaTMA = %4.2f</br>Nfreq = %4.2d</br>EqualEnergy = %s</br>
         """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,TimeRamp.value,deltaWK.value,
-               FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,GammaTMA.value,int(NFreq.value))
+               FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,GammaTMA.value,int(NFreq.value),EqEn)
         wave_maker_parameters.value = parameter
     
     elif wave_maker.value == 'JON_2D':
         parameter = """Xc_WK = %4.2f</br>Yc_WK = %4.2f</br>DEP_WK = %4.2f</br>
         Time_ramp = %4.2f</br>Delta_WK = %4.2f</br>FreqPeak = %4.2f</br>FreqMin = %4.2f</br>
         FreqMax = %4.2f</br>Hmo = %4.2f</br>GammaTMA = %4.2f</br>Nfreq = %4.2d</br> Ntheta = %4.2d</br>
-        ThetaPeak = %4.2f</br>
+        ThetaPeak = %4.2f</br>EqualEnergy = %s</br>
         """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,TimeRamp.value,deltaWK.value,
                FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,GammaTMA.value,int(NFreq.value),int(NTheta.value),
-               ThetaPeak.value)
+               ThetaPeak.value,EqEn)
         wave_maker_parameters.value = parameter
         
     elif wave_maker.value == 'INI_GAUS':
@@ -535,9 +545,9 @@ def wave_param_show_input(variable):
     elif wave_maker.value == 'TMA_1D/IRR_WAVE':
         parameter = """Xc_WK = %4.2f</br>Yc_WK = %4.2f</br>DEP_WK = %4.2f</br>
         Time_ramp = %4.2f</br>Delta_WK = %4.2f</br>FreqPeak = %4.2f</br>FreqMin = %4.2f</br>
-        FreqMax = %4.2f</br>Hmo = %4.2f</br>GammaTMA = %4.2f</br>Nfreq = %4.2d</br>
+        FreqMax = %4.2f</br>Hmo = %4.2f</br>GammaTMA = %4.2f</br>Nfreq = %4.2d</br>EqualEnergy = %s</br>
         """ % (xc_wk.value,yc_wk.value,float(depWK.value)*-1,TimeRamp.value,deltaWK.value,
-               FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,GammaTMA.value,int(NFreq.value))
+               FreqPeak.value,FreqMin.value,FreqMax.value,HMO.value,GammaTMA.value,int(NFreq.value),EqEn)
         wave_maker_parameters.value = parameter
            
     else: 
@@ -562,6 +572,11 @@ def update_input_function(variable):
 ### this function lets the user update the input.txt before generating the file
 
 # Step 1: change the checkbox variables True & False to T & F
+    if EqualEnergy.value == True:
+        EqEn = 'T'
+    else:
+        EqEn = 'F'
+    
     if show_initial.value == True:
         turn_on_IC = 'T'
     else:
@@ -720,7 +735,7 @@ def update_input_function(variable):
         dx = float(val[5])
 
         #Step  3: update FUNWAVE's input.txt before generating it   
-        wave_maker_parameters = wave_param_show_input(variable) # wavemaker parameter list that will be added to the input
+        wave_maker_parameters = wave_param_show_input(EqEn) # wavemaker parameter list that will be added to the input
 
         inputFile ="""!INPUT FILE FOR FUNWAVE_TVD </br>
     ! NOTE: all input parameter are capital sensitive </br>
