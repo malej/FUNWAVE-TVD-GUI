@@ -21,11 +21,11 @@ bathy_list_container = widgets.VBox([label_intro,bathy_list],layout = widgets.La
 #####################################
 
 label_intro1 = widgets.HTML("""<ul> 
-<li><b>Substep 1:</b> Upload your file in the <b>Project Title</b> folder through  the <b>Jupyter Notebook home directory</b>. Go inside your Projet's folder and upload the file by pressing the "Upload" button located at the top right corner of the directory.<br></li>
+<li><b>Substep 1:</b> Upload your file in the <b>Project Title</b> folder through  the <b>Jupyter Notebook home directory</b>. Go inside your Project's folder and upload the file by pressing the "Upload" button located at the top right corner of the directory.<br></li>
 
 <b>NOTE: </b>This file must be a text file (ASCII) of 1 column; with depth values [-] for underwater (below mean water level). Also, the values must be in <b>metric</b> units.<br><br>
 
-<li><b>Substep 2:</b> Once the file is uploaded, identify its name (e.g., myBathy.txt), and eitehr its step size (DX) or its Total Horizontal Length (THL) in the widgets/box below. Press "Plot Bathymetry" to visualize the bathymetry.<br><br></li>
+<li><b>Substep 2:</b> Once the file is uploaded, identify its name (e.g., myBathy.txt), and either its step size (DX) or its Total Horizontal Length (THL) in the widgets/box below. Press "Plot Bathymetry" to visualize the bathymetry.<br><br></li>
 
 <li><b>Substep 3:</b> If you are satisfied with the bathymetry, you must press <b> Assemble Bathymetry File</b> button before continuing to <b>Step #2</b>. This will format the uploaded bathymetry file to the <b>required FUNWAVE format.</b><br><br></li>
 </ul>
@@ -60,7 +60,7 @@ NumSeg = 2
 
 # label intro
 label_intro2 = widgets.HTML("""This option plots and saves a simple one-dimensional <b>slope</b>
-bathymetry consisting of 2 segments and 3 vertices. The user can select the <b>total horizontal lenght</b> 
+bathymetry consisting of 2 segments and 3 vertices. The user can select the <b>total horizontal length</b> 
 of the bathymetry <b>(THL)</b>, the discretization (horizontal spatial step size)  <b>(DX)</b>,
 and the <b>elevation</b> with the  <b>location</b> of the vertices. Once the desired bathymetry is plotted,
 press the <b>Assemble Bathymetry File</b>
@@ -77,35 +77,39 @@ label_NOTE = widgets.HTML("""<b>NOTE:</b> Depth values are [-] for underwater (b
 ## vertex elevation and location floatsliders:
 # vertex 1 
 v1_label = widgets.HTML("<b>Vertex #1<b/>")
-MWL = widgets.FloatSlider(description='Elevation ',min=-10, max=15,value = -10,
-                    step='0.01',layout = widgets.Layout(width='100%',height = '50px')) #V1 elev = mean water level
+MWL = widgets.BoundedFloatText(description = "Elevation ", min=-1500, max=15,value = -10,
+                    step='0.01') #V1 elev = mean water level
+MWL_box = widgets.HBox([MWL],layout=widgets.Layout(width = "75%",height ='50px'))
+
 label_v1_loc = widgets.HTML("""Located at <b>0.0 meters</b>.""")     # vert1 loc = 0.0m
-v1_box = widgets.VBox([v1_label,MWL,label_v1_loc],layout=widgets.Layout(display='flex-grow',
+v1_box = widgets.VBox([v1_label,MWL_box,label_v1_loc],layout=widgets.Layout(
                     align_items='center',
                     width='30%',
                     border='solid 2px grey'))
 
 # vertex 2
 v2_label = widgets.HTML("<b>Vertex #2<b/>")
-vert2_loc = widgets.FloatSlider(max=THL.value, min=0,value=10,
-                    step='0.01',layout=MWL.layout,   
-                    description = 'Location')
+vert2_loc = widgets.BoundedFloatText(description = 'Location ', max=THL.value, min=0,value=10,
+                    step='0.01')
+vert2_loc_box = widgets.HBox([vert2_loc],layout = MWL_box.layout)
+
 # link THL value to vertex 2 location
 widgets.jsdlink((THL,'value'),(vert2_loc,'max'))
 
-vert2_elev = widgets.FloatSlider(min=MWL.value, max=15,value = MWL.value,
-                    step='0.01', layout=MWL.layout,
-                    description = 'Elevation ')  
+vert2_elev = widgets.BoundedFloatText(description = "Elevation ", min=MWL.min, max=15,value = MWL.value,
+                    step='0.01') 
+vert2_elev_box = widgets.HBox([vert2_elev],layout = MWL_box.layout)
 
-v2_box = widgets.VBox([v2_label,vert2_elev,vert2_loc],layout=v1_box.layout)
+v2_box = widgets.VBox([v2_label,vert2_elev_box,vert2_loc_box],layout=v1_box.layout)
 
 # vertex 3
 v3_label = widgets.HTML("<b>Vertex #3<b/>")
-vert3_elev = widgets.FloatSlider(min=MWL.value, max=15,value = MWL.value,
-                    step='0.01', layout=MWL.layout,
-                    description = 'Elevation')
+vert3_elev = widgets.BoundedFloatText(description = "Elevation ",min=MWL.min, max=15,value = MWL.value,
+                    step='0.01')
+vert3_elev_box = widgets.HBox([vert3_elev],layout = MWL_box.layout)
+
 label_v3_loc = widgets.HTML("""Located at <b>THL</b> distance.""")  # vert3 loc = THL
-v3_box = widgets.VBox([v3_label,vert3_elev,label_v3_loc],layout=v1_box.layout)
+v3_box = widgets.VBox([v3_label,vert3_elev_box,label_v3_loc],layout=v1_box.layout)
 
 
 VERT_box = widgets.HBox([v1_box,v2_box,v3_box])
@@ -120,15 +124,17 @@ Box_SlopeBathy = widgets.VBox(children=[label_intro2,space_box,domain_box,space_
 
 # label intro
 label_intro3 = widgets.HTML("""This option plots and saves a simple one-dimensional <b>flat</b>
-bathymetry with a constant depth. The user can select the <b>total horizontal lenght</b> 
+bathymetry with a constant depth. The user can select the <b>total horizontal length</b> 
 of the bathymetry <b>(THL)</b>, the <b>spacing</b> between the points <b>(DX)</b>,
 and the <b>Depth</b>. Once the desired bathymetry is plotted,
 press the <b>Assemble Bathymetry File</b>
 button and proceed to Step #2.<br>The values are in <b>metric</b> units.""",
                            layout=widgets.Layout(width='90%'))
 
+flat_domain_box = widgets.HBox([THL,dom,MWL],layout=widgets.Layout(align_items='center',width = '90%',height ='80px'))
+
 # slope container box
-Box_FlatBathy = widgets.VBox(children=[label_intro3,space_box,domain_box,space_box,MWL,space_box,
+Box_FlatBathy = widgets.VBox(children=[label_intro3,space_box,flat_domain_box,space_box,
                                         label_NOTE,space_box])
 
 

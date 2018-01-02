@@ -62,28 +62,30 @@ def toggle_choose_bathy(change):
     elif change['new'] == 'Slope':
         #show
         Box_SlopeBathy.layout.display=''
-        MWL.layout.width = '100%'
+        MWL.description = "Elevation "
         #hide
         Box_upload.layout.display='none'
         Box_FlatBathy.layout.display='none'
         
         # edit THL and dom layout
-        THL.layout = widgets.Layout(width = "25%")
-        dom.layout = widgets.Layout(width = "25%")
+        THL.layout.width = "25%"
+        dom.layout.width = "25%"
+        MWL.layout.width = "100%"
         
     elif change['new'] == 'Flat':
         #show
         Box_FlatBathy.layout.display=''
-        MWL.description='Depth'
-        MWL.layout.width = '50%'
         space_box.layout.height = '15px'
+        MWL.description = "Depth "
+        
         #hide
         Box_upload.layout.display='none' 
         Box_SlopeBathy.layout.display='none'
         
         # edit THL and dom layout
-        THL.layout = widgets.Layout(width = "25%")
-        dom.layout = widgets.Layout(width = "25%")
+        THL.layout.width = "30%"
+        dom.layout.width = "30%"
+        MWL.layout.width = "30%"
         
     else: 
         Box_upload.layout.display='none'
