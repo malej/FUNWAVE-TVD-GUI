@@ -1,0 +1,173 @@
+!INPUT FILE FOR FUNWAVE_TVD
+! NOTE: all input parameter are capital sensitive
+! --------------------TITLE-------------------------------------
+! title only for log file
+TITLE = JON1D_1 
+! -------------------PARALLEL INFO-----------------------------
+! 
+!    PX,PY - processor numbers in X and Y
+!    NOTE: make sure consistency with mpirun -np n (px*py)
+!    
+PX = 32
+PY = 1
+! --------------------DEPTH-------------------------------------
+! Depth types, DEPTH_TYPE=DATA: from depth file
+!              DEPTH_TYPE=FLAT: idealized flat, need depth_flat
+!              DEPTH_TYPE=SLOPE: idealized slope, 
+!                                 need slope,SLP starting point, Xslp
+!                                 and depth_flat
+DEPTH_TYPE = DATA
+! Depth file
+! depth format NOD: depth at node (M1xN1), ELE: depth at ele (MxN) 
+! where (M1,N1)=(M+1,N+1)  
+DEPTH_FILE = depth.txt
+DepthFormat = ELE
+! -------------------PRINT---------------------------------
+! PRINT*,
+! result folder
+RESULT_FOLDER = /Users/rdchlgs8/Documents/funwaveGUI/FUN_GUI/JON1D_1/output/
+! ------------------DIMENSION-----------------------------
+! global grid dimension
+Mglob = 1024
+Nglob = 3
+! ----------------- TIME----------------------------------
+! time: total computational time/ plot time / screen interval 
+! all in seconds
+TOTAL_TIME = 200.00
+PLOT_INTV = 10.00
+PLOT_INTV_STATION = 0.5
+SCREEN_INTV = 10.0
+! -----------------GRID----------------------------------
+! cartesian grid sizes
+DX = 1.00
+DY = 1.00
+! --------------- INITIAL UVZ ---------------------------
+! INI_UVZ - initial UVZ e.g., initial deformation
+!         must provide three (3) files 
+INI_UVZ = T
+! if true, input eta u and v file names
+ETA_FILE = ini_z.txt
+U_FILE = ini_u.txt
+V_FILE = ini_v.txt
+! ----------------WAVEMAKER------------------------------
+!  wave maker 
+! LEF_SOL- left boundary solitary, need AMP,DEP, LAGTIME 
+! INI_SOL- initial solitary wave, WKN B solution,  
+! need AMP, DEP, XWAVEMAKER  
+! INI_REC - rectangular hump, need to specify Xc,Yc and WID 
+! WK_REG - Wei and Kirby 1999 internal wave maker, Xc_WK,Tperiod 
+!          AMP_WK,DEP_WK,Theta_WK, Time_ramp (factor of period) 
+! WK_IRR - Wei and Kirby 1999 TMA spectrum wavemaker, Xc_WK, 
+!          DEP_WK,Time_ramp, Delta_WK, FreqPeak, FreqMin,FreqMax, 
+!          Hmo,GammaTMA,ThetaPeak 
+! WK_TIME_SERIES - fft time series to get each wave component 
+!                 and then use Wei and Kirby 1999  
+!          need input WaveCompFile (including 3 columns: per,amp,pha) 
+!          NumWaveComp,PeakPeriod,DEP_WK,Xc_WK,Ywidth_WK
+WAVEMAKER = WK_RE
+!
+Xc_WK = 200.00
+Yc_WK = 0.00
+DEP_WK = 10.00
+Ywidth_WK = 0.00
+Time_ramp = 0.00
+Delta_WK = 0.00
+FreqPeak = 0.05
+FreqMin = 0.15
+FreqMax = 0.40
+Hmo = 1.00
+GammaTMA = 3.30
+Nfreq = 45.00
+EqualEnergy = F        
+!
+! ---------------- PERIODIC BOUNDARY CONDITION ---------
+! South-North periodic boundary condition
+!
+PERIODIC = F
+! ---------------- SPONGE LAYER ------------------------
+! DHI type sponge layer
+! need to specify widths of four boundaries and parameters
+! set width=0.0 if no sponge
+! R_sponge: decay rate
+! A_sponge: maximum decay rate
+! e.g., sharp: R=0.85
+!       mild:  R=0.90, A=5.0
+!       very mild, R=0.95, A=5.0
+DIFFUSION_SPONGE = T
+FRICTION_SPONGE = T
+DIRECT_SPONGE = T
+Csp = 0.00
+CDsponge = 0.00
+Sponge_west_width =  40.00
+Sponge_east_width =  15.00
+Sponge_south_width = 24.00
+Sponge_north_width = 67.00
+R_sponge = 0.85
+A_sponge = 5.00
+! ----------------PHYSICS------------------------------
+! parameters to control type of equations
+! dispersion: all dispersive terms
+! gamma1=1.0,gamma2=1.0: default: Fully nonlinear equations
+!----------------Friction-----------------------------
+Cd = 0.0
+! ----------------NUMERICS----------------------------
+! time scheme: runge_kutta for all types of equations
+!              predictor-corrector for NSWE
+! space scheme: second-order
+!               fourth-order
+! construction: HLLC
+! cfl condition: CFL
+! froude number cap: FroudeCap
+! CFL
+CFL = 0.5
+! Froude Number Cap (to avoid jumping drop, set 1.5)
+FroudeCap = 3.0
+! --------------WET-DRY-------------------------------
+! MinDepth for wetting-drying
+MinDepth=0.01
+!---------------breaking-----------------------------
+!  there are two options for breaking algorithm 
+!  1: shock-capturing breaking, need SWE_ETA_DEP
+!  2: eddy-viscosity breaking, when VISCOSITY_BREAKING = T
+!     the shock-capturing breaking is invalid
+!     Cbrk1 and Cbrk2 are parameters defined in Kennedy et al 2000
+!     suggested in this model Cbrk1=0.65, Cbrk2=0.15
+!     WAVEMAKER_Cbrk is to avoid breaking inside wavemaker 
+VISCOSITY_BREAKING = T
+Cbrk1 = 0.65
+Cbrk2 = 0.35
+! ----------------- MIXING ---------------------------
+! if use smagorinsky mixing, have to set -DMIXING in Makefile
+! and set averaging time interval, T_INTV_mean, default: 20s
+STEADY_TIME = 75.00
+T_INTV_mean = 15.00
+! -----------------OUTPUT-----------------------------
+! stations 
+! if NumberStations>0, need input i,j in STATION_FILE
+NumberStations = 15
+STATIONS_FILE = stations.txt
+! output variables, T=.TRUE, F = .FALSE.
+DEPTH_OUT = T
+U = T
+V = T
+ETA = T
+Hmax = T
+Hmin = T
+MFmax = T
+Umax = T
+VORmax = T
+Umean = T
+Vmean = T
+ETAmean = T
+MASK = T
+MASK9 = T
+SourceX = T
+SourceY = T
+P = T
+Q = T
+Fx = T
+Fy = T
+Gx = T
+Gy = T
+AGE = T
+WaveHeight = T
